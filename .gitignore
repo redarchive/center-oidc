@@ -39,3 +39,6 @@ lerna-debug.log*
 
 # dotenv
 *.env**
+
+# keypair
+keys/

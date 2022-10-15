@@ -18,6 +18,7 @@ export class User {
     type: 'varchar',
     length: 30,
     nullable: false,
+    select: true,
     unique: true
   })
   public readonly login: string
@@ -27,6 +28,7 @@ export class User {
     type: 'char',
     length: 128,
     nullable: false,
+    select: false
   })
   public readonly password: string
 
@@ -34,7 +36,8 @@ export class User {
     name: 'users_salt',
     type: 'char',
     length: 5,
-    nullable: false
+    nullable: false,
+    select: false
   })
   public readonly salt: string
 
@@ -43,6 +46,7 @@ export class User {
     type: 'varchar',
     length: 30,
     nullable: true,
+    select: true,
     unique: false
   })
   public readonly nickname?: string
@@ -52,6 +56,7 @@ export class User {
     type: 'varchar',
     length: 30,
     nullable: true,
+    select: false,
     unique: false
   })
   public readonly email?: string

@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, CACHE_MANAGER } from '@nestjs/common';
+import { Controller, Post, Body, Put } from '@nestjs/common';
 import { PhoneVerifyService } from './phone-verify.service';
 import { CreatePhoneVerifyDto } from './dto/create-phone-verify.dto';
-import { Cache } from 'cache-manager';
+import { SignPhoneVerifyDto } from './dto/sign-phone-verify.dto';
 
 @Controller('phone-verify')
 export class PhoneVerifyController {
@@ -10,17 +10,23 @@ export class PhoneVerifyController {
   ) {}
 
   @Post()
-  create(@Body() createPhoneVerifyDto: CreatePhoneVerifyDto) {
-    return this.phoneVerifyService.create(createPhoneVerifyDto);
+  async create(@Body() createPhoneVerifyDto: CreatePhoneVerifyDto) {
+    await this.phoneVerifyService.create(createPhoneVerifyDto);
+
+    return {
+      success: true
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.phoneVerifyService.findAll();
-  }
+  @Put()
+  async sign(@Body() verifyPhoneVerifyDto: SignPhoneVerifyDto) {
+    const signedKey = await this.phoneVerifyService.sign(verifyPhoneVerifyDto)
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.phoneVerifyService.findOne(+id);
+    return {
+      success: true,
+      data: {
+        signedKey
+      }
+    }
   }
 }
