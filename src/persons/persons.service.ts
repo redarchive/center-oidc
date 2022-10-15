@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
@@ -24,8 +25,8 @@ export class PersonsService {
     return `This action returns a #${id} person`;
   }
 
-  public async checkExistByPhone (phone: string): Promise<boolean> {
-    return await this.persons.countBy({ phone }) > 0
+  public async findOneByPhone (phone: string): Promise<Person | undefined> {
+    return await this.persons.findOneBy({ phone })
   }
 
   update(id: number, updatePersonDto: UpdatePersonDto) {
@@ -34,5 +35,9 @@ export class PersonsService {
 
   remove(id: number) {
     return `This action removes a #${id} person`;
+  }
+
+  public async assignUser (id: number, userId: number) {
+    await this.persons.update({ id }, { userId })
   }
 }

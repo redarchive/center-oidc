@@ -35,7 +35,7 @@ export class User {
   @Column({
     name: 'users_salt',
     type: 'char',
-    length: 5,
+    length: 6,
     nullable: false,
     select: false
   })
@@ -77,7 +77,6 @@ export class User {
   public readonly deletedAt: Date
 
   @OneToOne(() => Person, {
-    eager: true,
     nullable: false,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
@@ -87,5 +86,5 @@ export class User {
     referencedColumnName: 'id',
     foreignKeyConstraintName: 'FK_users_persons'
   })
-  public readonly person: Person
+  public readonly person?: Person
 }

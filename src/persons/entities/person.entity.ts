@@ -45,9 +45,16 @@ export class Person {
   })
   public readonly type: PersonType
 
+  @Column({
+    name: 'users_id',
+    type: 'int',
+    unsigned: true,
+    nullable: true,
+  })  
+  public readonly userId?: number
+
   @OneToOne(() => User, {
     nullable: true,
-    eager: true,
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE'
   })

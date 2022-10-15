@@ -27,7 +27,7 @@ export class PhoneVerifyService {
   }
 
   public async create (createPhoneVerifyDto: CreatePhoneVerifyDto) {
-    const person = await this.personsService.checkExistByPhone(createPhoneVerifyDto.phone)
+    const person = await this.personsService.findOneByPhone(createPhoneVerifyDto.phone)
     if (!person) {
       throw new BadRequestException('USER_NOT_FOUND')
     }

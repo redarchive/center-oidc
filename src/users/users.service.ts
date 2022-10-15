@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { randomBytes } from 'crypto'
+import SHA3 from 'sha3'
+import { PersonsService } from 'src/persons/persons.service'
+import { PhoneVerifyService } from 'src/phone-verify/phone-verify.service'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -9,11 +13,41 @@ import { User } from './entities/user.entity'
 export class UsersService {
   constructor (
     @InjectRepository(User)
-    private readonly users: Repository<User>
+    private readonly users: Repository<User>,
+    private readonly personsService: PersonsService,
+    private readonly phoneVerifyService: PhoneVerifyService
   ){}
 
-  public create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user'
+  public async create(createUserDto: CreateUserDto) {
+    const person = await this.personsService.findOneByPhone(createUserDto.phone)
+    if (!person) {
+      throw new BadRequestException('USER_NOT_FOUND')
+    }
+
+    const verifed = this.phoneVerifyService.verify(createUserDto.phoneVerify, createUserDto.phone)
+    if (!verifed) {
+      throw new BadRequestException('VERIFY_INVALID')
+    }
+
+    if (typeof person.userId === 'number') {
+      throw new BadRequestException('USER_ALREADY_EXIST')
+    }
+
+    const salt = randomBytes(3).toString()
+    const password =
+      new SHA3(512)
+        .update(createUserDto.password)
+        .update(salt)
+        .digest('hex')
+
+    const { generatedMaps } = await this.users.insert({
+      ...createUserDto,
+      password,
+      salt,
+      person
+    })
+
+    await this.personsService.assignUser(person.id, generatedMaps[0].id)    
   }
 
   findAll() {

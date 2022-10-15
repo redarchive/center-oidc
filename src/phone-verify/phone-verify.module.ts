@@ -28,6 +28,7 @@ import { readFileSync } from 'fs';
     })
   ],
   controllers: [PhoneVerifyController],
-  providers: [PhoneVerifyService]
+  providers: [PhoneVerifyService],
+  exports: [PhoneVerifyService]
 })
 export class PhoneVerifyModule {}

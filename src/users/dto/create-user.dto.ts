@@ -1,4 +1,4 @@
-import { IsAscii, IsEmail, IsString, Length, MaxLength } from 'class-validator'
+import { IsAscii, IsEmail, IsPhoneNumber, IsString, Length, MaxLength } from 'class-validator'
 
 export class CreateUserDto {
   @IsString()
@@ -14,6 +14,11 @@ export class CreateUserDto {
   @MaxLength(30)
   @IsEmail()
   public readonly email: string
+
+  @IsString()
+  @IsPhoneNumber('KR')
+  @Length(11, 11)
+  public readonly phone: string
 
   @IsString()
   @IsAscii()

@@ -10,8 +10,8 @@ export class RedisService implements CacheOptionsFactory {
 
   public createCacheOptions(): CacheModuleOptions<any> {
     return {
-      store: redisStore,
-      host: this.configService.get<string>('REDIS_HOST', 'localhost'),
+      store: redisStore.create(),
+      host: this.configService.get<string>('REDIS_HOST', '127.0.0.1'),
       port: this.configService.get<number>('REDIS_PORT', 6379)
     }
   }
