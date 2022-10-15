@@ -35,10 +35,11 @@ export class PhoneVerifyService {
     const verifyKey = randomBytes(3).toString('hex').toUpperCase()
 
     await this.cacheService.set(`sign/${verifyKey}`, createPhoneVerifyDto.phone, 5 * 60)
-    await this.aligoService.sendMessages({
-      msg: `[통합로그인]\n회원가입을 위한 휴대폰 인증 번호는 아래와 같습니다.\n\n"${verifyKey}" (5분 안에 입력)`,
-      receiver: createPhoneVerifyDto.phone
-    })
+    // await this.aligoService.sendMessages({
+    //   msg: `[통합로그인]\n회원가입을 위한 휴대폰 인증 번호는 아래와 같습니다.\n\n"${verifyKey}" (5분 안에 입력)`,
+    //   receiver: createPhoneVerifyDto.phone
+    // })
+    console.log("phone vk: %s=%s", createPhoneVerifyDto.phone, verifyKey)
   }
 
   public async sign (signPhoneVerifyDto: SignPhoneVerifyDto) {

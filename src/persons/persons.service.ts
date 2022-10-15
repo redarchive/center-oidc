@@ -13,29 +13,29 @@ export class PersonsService {
     private readonly persons: Repository<Person>
   ) {}
 
-  create(createPersonDto: CreatePersonDto) {
-    return 'This action adds a new person';
-  }
+  // create(createPersonDto: CreatePersonDto) {
+  //   return 'This action adds a new person';
+  // }
 
-  findAll() {
-    return `This action returns all persons`;
-  }
+  // findAll() {
+  //   return `This action returns all persons`;
+  // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} person`;
-  }
+  // findOne(id: number) {
+  //   return `This action returns a #${id} person`;
+  // }
 
   public async findOneByPhone (phone: string): Promise<Person | undefined> {
     return await this.persons.findOneBy({ phone })
   }
 
-  update(id: number, updatePersonDto: UpdatePersonDto) {
-    return `This action updates a #${id} person`;
-  }
+  // update(id: number, updatePersonDto: UpdatePersonDto) {
+  //   return `This action updates a #${id} person`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} person`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} person`;
+  // }
 
   public async assignUser (id: number, userId: number) {
     await this.persons.update({ id }, { userId })
