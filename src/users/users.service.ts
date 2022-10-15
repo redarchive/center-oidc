@@ -2,10 +2,12 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { randomBytes } from 'crypto'
 import SHA3 from 'sha3'
+import { AuthService } from 'src/auth/auth.service'
 import { PersonsService } from 'src/persons/persons.service'
 import { PhoneVerifyService } from 'src/phone-verify/phone-verify.service'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
+import { LoginUserDto } from './dto/login-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
 
@@ -14,6 +16,7 @@ export class UsersService {
   constructor (
     @InjectRepository(User)
     private readonly users: Repository<User>,
+    private readonly authService: AuthService,
     private readonly personsService: PersonsService,
     private readonly phoneVerifyService: PhoneVerifyService
   ){}
@@ -48,6 +51,25 @@ export class UsersService {
     })
 
     await this.personsService.assignUser(person.id, generatedMaps[0].id)    
+  }
+
+  public async login (loginUserDto: LoginUserDto) {
+    const user = await this.users.findOneBy({ login: loginUserDto.login })
+    if (!user) {
+      throw new BadRequestException('ID_OR_PASSWORD_INVALID')
+    }
+
+    const password =
+      new SHA3(512)
+        .update(loginUserDto.password)
+        .update(user.salt)
+        .digest('hex')
+
+    if (password !== user.password) {
+      throw new BadRequestException('ID_OR_PASSWORD_INVALID')
+    }
+
+    return this.authService.sign(user.id)
   }
 
   // findAll() {

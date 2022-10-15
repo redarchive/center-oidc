@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from './entities/user.entity'
 import { PersonsModule } from 'src/persons/persons.module'
 import { PhoneVerifyModule } from 'src/phone-verify/phone-verify.module'
+import { AuthModule } from 'src/auth/auth.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     PersonsModule,
-    PhoneVerifyModule
+    PhoneVerifyModule,
+    AuthModule
   ],
   controllers: [UsersController],
   providers: [UsersService],
