@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthMiddleware } from 'src/auth/auth.middleware';
 import { AuthModule } from 'src/auth/auth.module';
+import { ClientsModule } from 'src/clients/clients.module';
 import { PersonsModule } from 'src/persons/persons.module';
 import { PhoneVerifyModule } from 'src/phone-verify/phone-verify.module';
 import { SessionsModule } from 'src/sessions/sessions.module';
@@ -21,7 +22,8 @@ import { DBConnService } from './dbconn/dbconn.service';
     UsersModule,
     PhoneVerifyModule,
     AuthModule,
-    SessionsModule
+    SessionsModule,
+    ClientsModule
   ]
 })
 export class AppModule implements NestModule {

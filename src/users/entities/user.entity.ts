@@ -1,5 +1,6 @@
+import { Client } from "src/clients/entities/client.entity";
 import { Person } from "src/persons/entities/person.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
   name: 'users'
@@ -87,4 +88,7 @@ export class User {
     foreignKeyConstraintName: 'FK_users_persons'
   })
   public readonly person?: Person
+
+  @OneToMany(() => Client, (client) => client.user)
+  public readonly clients: Client[]
 }

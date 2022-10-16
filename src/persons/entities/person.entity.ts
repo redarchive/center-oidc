@@ -7,6 +7,17 @@ export enum PersonType {
   TEACHER = 2
 }
 
+export enum PersonGender {
+  MALE = 'M',
+  FEMALE = 'F'
+}
+
+export enum PersonGrade {
+  FIRST_GRADE = 1,
+  SECOND_GRADE = 2,
+  THIRD_GRADE = 3
+}
+
 @Entity({
   name: 'persons'
 })
@@ -44,6 +55,45 @@ export class Person {
     default: PersonType.CURRNET_STUDENT
   })
   public readonly type: PersonType
+
+  @Column({
+    name: 'persons_gender',
+    type: 'char',
+    length: 1,
+    nullable: true
+  })
+  public readonly gender?: PersonGender
+
+  @Column({
+    name: 'persons_grade',
+    type: 'tinyint',
+    unsigned: true,
+    nullable: true
+  })
+  public readonly grade?: PersonGrade
+
+  @Column({
+    name: 'persons_classroom',
+    type: 'int',
+    unsigned: true,
+    nullable: true
+  })
+  public readonly classroom?: number
+
+  @Column({
+    name: 'persons_classnumber',
+    type: 'int',
+    unsigned: true,
+    nullable: true
+  })
+  public readonly classNumber?: number
+
+  @Column({
+    name: 'persons_dormitoryroomnumber',
+    type: 'varchar',
+    nullable: true
+  })
+  public readonly dormitoryRoomNumber?: number
 
   @Column({
     name: 'users_id',
