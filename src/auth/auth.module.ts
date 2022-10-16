@@ -3,7 +3,6 @@ import { AuthService } from './auth.service'
 import { ConfigModule } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { readFileSync } from 'fs'
-import { UsersModule } from 'src/users/users.module'
 
 @Module({
   imports: [

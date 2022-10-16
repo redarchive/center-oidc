@@ -57,9 +57,12 @@ export class UsersService {
   //   return `This action returns all users`
   // }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`
-  // }
+  public findOne (id: number, person = true): Promise<User | undefined> {
+    return this.users.findOne({
+      where: { id },
+      relations: { person }
+    })
+  }
 
   public findOneByLogin (login: string, hideSecure = true) {
     return this.users.findOne({

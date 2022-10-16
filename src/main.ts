@@ -1,12 +1,17 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app/app.module'
 import * as morgan from 'morgan'
+import * as cookieParser from 'cookie-parser'
+import * as compression from 'compression'
 import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   
   app.use(morgan('combined'))
+  app.use(cookieParser())
+  app.use(compression())
+
   app.useGlobalPipes(new ValidationPipe({
     forbidNonWhitelisted: true,
     transform: true,

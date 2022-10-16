@@ -12,7 +12,7 @@ export class SessionsService {
   ) {}
 
   public async create (createSessionDto: CreateSessionDto) {
-    const user = await this.usersService.findOneByLogin(createSessionDto.login)
+    const user = await this.usersService.findOneByLogin(createSessionDto.login, false)
 
     if (!user) {
       throw new BadRequestException('ID_OR_PASSWORD_INVALID')

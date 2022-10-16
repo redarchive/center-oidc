@@ -8,12 +8,16 @@ import {
   Delete,
   Put,
   Res,
+  Req,
+  UseGuards,
 } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { LoginUserDto } from './dto/login-user.dto'
 import { Response } from 'express'
+import { TypedRequest } from 'src/auth/dto/Locals.dto'
+import { AuthGuard } from 'src/auth/auth.guard'
 
 @Controller('users')
 export class UsersController {
@@ -28,7 +32,6 @@ export class UsersController {
     }
   }
 
-
   // @Get()
   // findAll() {
   //   return this.usersService.findAll()
@@ -38,6 +41,17 @@ export class UsersController {
   // findOne(@Param('id') id: string) {
   //   return this.usersService.findOne(+id)
   // }
+
+  @Get('@me')
+  @UseGuards(AuthGuard)
+  public async findMe (@Req() req: TypedRequest) {
+    const me = await this.usersService.findOne(req.userId, true)
+
+    return {
+      success: true,
+      data: { me }
+    }
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
