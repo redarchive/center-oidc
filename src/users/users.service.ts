@@ -53,25 +53,6 @@ export class UsersService {
     await this.personsService.assignUser(person.id, generatedMaps[0].id)    
   }
 
-  public async login (loginUserDto: LoginUserDto) {
-    const user = await this.users.findOneBy({ login: loginUserDto.login })
-    if (!user) {
-      throw new BadRequestException('ID_OR_PASSWORD_INVALID')
-    }
-
-    const password =
-      new SHA3(512)
-        .update(loginUserDto.password)
-        .update(user.salt)
-        .digest('hex')
-
-    if (password !== user.password) {
-      throw new BadRequestException('ID_OR_PASSWORD_INVALID')
-    }
-
-    return this.authService.sign(user.id)
-  }
-
   // findAll() {
   //   return `This action returns all users`
   // }
@@ -79,6 +60,17 @@ export class UsersService {
   // findOne(id: number) {
   //   return `This action returns a #${id} user`
   // }
+
+  public findOneByLogin (login: string, hideSecure = true) {
+    return this.users.findOne({
+      where: { login },
+      select: !hideSecure ? {
+        id: true,
+        salt: true,
+        password: true
+      } : undefined
+    })
+  }
 
   // update(id: number, updateUserDto: UpdateUserDto) {
   //   return `This action updates a #${id} user`

@@ -28,22 +28,6 @@ export class UsersController {
     }
   }
 
-  @Put()
-  async login(@Body() loginUserDto: LoginUserDto, @Res({ passthrough: true }) res: Response) {
-    const token = await this.usersService.login(loginUserDto)
-
-    res.cookie('SESSION_TOKEN', token, {
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: true,
-      secure: true
-    })
-
-    return {
-      success: true
-    }
-  }
 
   // @Get()
   // findAll() {
