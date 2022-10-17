@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreatePersonDto } from './dto/create-person.dto';
-import { UpdatePersonDto } from './dto/update-person.dto';
-import { Person } from './entities/person.entity';
+import { Person, PersonType } from './entities/person.entity';
 
 @Injectable()
 export class PersonsService {
@@ -25,8 +22,11 @@ export class PersonsService {
   //   return `This action returns a #${id} person`;
   // }
 
-  public async findOneByPhone (phone: string): Promise<Person | undefined> {
-    return await this.persons.findOneBy({ phone })
+  public async findOneByPhone (type: PersonType, phone: string): Promise<Person | undefined> {
+    return await this.persons.findOneBy({
+      phone,
+      type
+    })
   }
 
   // update(id: number, updatePersonDto: UpdatePersonDto) {

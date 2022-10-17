@@ -3,12 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { randomBytes } from 'crypto'
 import SHA3 from 'sha3'
 import { AuthService } from 'src/auth/auth.service'
+import { PersonType } from 'src/persons/entities/person.entity'
 import { PersonsService } from 'src/persons/persons.service'
 import { PhoneVerifyService } from 'src/phone-verify/phone-verify.service'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
-import { LoginUserDto } from './dto/login-user.dto'
-import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
 
 @Injectable()
@@ -22,7 +21,7 @@ export class UsersService {
   ){}
 
   public async create(createUserDto: CreateUserDto) {
-    const person = await this.personsService.findOneByPhone(createUserDto.phone)
+    const person = await this.personsService.findOneByPhone(PersonType[createUserDto.type], createUserDto.phone)
     if (!person) {
       throw new BadRequestException('USER_NOT_FOUND')
     }
@@ -64,9 +63,14 @@ export class UsersService {
     })
   }
 
-  public findOneByLogin (login: string, hideSecure = true) {
+  public findOneByLogin (type: PersonType, login: string, hideSecure = true) {
     return this.users.findOne({
-      where: { login },
+      where: {
+        login,
+        person: {
+          type
+        }
+      },
       select: !hideSecure ? {
         id: true,
         salt: true,

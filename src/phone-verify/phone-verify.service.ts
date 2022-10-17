@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { randomBytes } from 'crypto';
 import { SignPhoneVerifyDto } from './dto/sign-phone-verify.dto';
 import { JwtService } from '@nestjs/jwt';
+import { PersonType } from 'src/persons/entities/person.entity';
 
 @Injectable()
 export class PhoneVerifyService {
@@ -27,7 +28,7 @@ export class PhoneVerifyService {
   }
 
   public async create (createPhoneVerifyDto: CreatePhoneVerifyDto) {
-    const person = await this.personsService.findOneByPhone(createPhoneVerifyDto.phone)
+    const person = await this.personsService.findOneByPhone(PersonType[createPhoneVerifyDto.type], createPhoneVerifyDto.phone)
     if (!person) {
       throw new BadRequestException('USER_NOT_FOUND')
     }

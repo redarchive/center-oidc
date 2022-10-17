@@ -2,7 +2,7 @@ import { User } from "src/users/entities/user.entity";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum PersonType {
-  CURRNET_STUDENT = 0,
+  CURRENT_STUDENT = 0,
   GRADUATED_STUDENT = 1,
   TEACHER = 2
 }
@@ -52,7 +52,7 @@ export class Person {
     type: 'int',
     unsigned: true,
     nullable: false,
-    default: PersonType.CURRNET_STUDENT
+    default: PersonType.CURRENT_STUDENT
   })
   public readonly type: PersonType
 
