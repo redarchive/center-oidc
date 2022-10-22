@@ -1,4 +1,4 @@
-import { IsAscii, IsEmail, IsIn, IsPhoneNumber, IsString, Length, MaxLength } from 'class-validator'
+import { IsAscii, IsEmail, IsIn, IsOptional, IsPhoneNumber, IsString, Length, MaxLength } from 'class-validator'
 import { PersonType } from 'src/persons/entities/person.entity'
 
 export class CreateUserDto {
@@ -8,13 +8,15 @@ export class CreateUserDto {
   public readonly login: string
 
   @IsString()
-  @Length(1, 30)
-  public readonly nickname: string
+  @Length(2, 30)
+  @IsOptional()
+  public readonly nickname?: string
 
   @IsString()
   @MaxLength(30)
   @IsEmail()
-  public readonly email: string
+  @IsOptional()
+  public readonly email?: string
 
   @IsString()
   @IsPhoneNumber('KR')
@@ -26,7 +28,7 @@ export class CreateUserDto {
   public readonly phoneVerify: string
 
   @IsString()
-  @Length(10, 30)
+  @Length(8, 30)
   @IsAscii()
   public readonly password: string
 

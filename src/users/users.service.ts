@@ -22,6 +22,7 @@ export class UsersService {
 
   public async create(createUserDto: CreateUserDto) {
     const person = await this.personsService.findOneByPhone(PersonType[createUserDto.type], createUserDto.phone)
+    const user = await this.users.findOneBy({ login: createUserDto.login })
     if (!person) {
       throw new BadRequestException('USER_NOT_FOUND')
     }
@@ -31,8 +32,12 @@ export class UsersService {
       throw new BadRequestException('VERIFY_INVALID')
     }
 
-    if (typeof person.userId === 'number') {
+    if (user) {
       throw new BadRequestException('USER_ALREADY_EXIST')
+    }
+
+    if (typeof person.userId === 'number') {
+      throw new BadRequestException('USER_ALREADY_ASSOCIATED')
     }
 
     const salt = randomBytes(3).toString()
@@ -49,7 +54,7 @@ export class UsersService {
       person
     })
 
-    await this.personsService.assignUser(person.id, generatedMaps[0].id)    
+    await this.personsService.assignUser(person.id, generatedMaps[0].id)   
   }
 
   // findAll() {
