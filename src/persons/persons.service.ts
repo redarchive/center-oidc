@@ -23,9 +23,14 @@ export class PersonsService {
   // }
 
   public async findOneByPhone (type: PersonType, phone: string): Promise<Person | undefined> {
-    return await this.persons.findOneBy({
-      phone,
-      type
+    return await this.persons.findOne({
+      relations: {
+        user: true
+      },
+      where: {
+        phone,
+        type
+      }
     })
   }
 

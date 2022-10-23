@@ -11,10 +11,13 @@ export class PhoneVerifyController {
 
   @Post()
   async create(@Body() createPhoneVerifyDto: CreatePhoneVerifyDto) {
-    await this.phoneVerifyService.create(createPhoneVerifyDto);
+    const login = await this.phoneVerifyService.create(createPhoneVerifyDto);
 
     return {
-      success: true
+      success: true,
+      data: {
+        login
+      }
     }
   }
 

@@ -41,6 +41,8 @@ export class PhoneVerifyService {
     //   receiver: createPhoneVerifyDto.phone
     // })
     console.log("phone vk: %s=%s", createPhoneVerifyDto.phone, verifyKey)
+
+    return person.user?.login
   }
 
   public async sign (signPhoneVerifyDto: SignPhoneVerifyDto) {

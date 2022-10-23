@@ -2,12 +2,12 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { randomBytes } from 'crypto'
 import SHA3 from 'sha3'
-import { AuthService } from 'src/auth/auth.service'
 import { PersonType } from 'src/persons/entities/person.entity'
 import { PersonsService } from 'src/persons/persons.service'
 import { PhoneVerifyService } from 'src/phone-verify/phone-verify.service'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
 import { User } from './entities/user.entity'
 
 @Injectable()
@@ -15,7 +15,6 @@ export class UsersService {
   constructor (
     @InjectRepository(User)
     private readonly users: Repository<User>,
-    private readonly authService: AuthService,
     private readonly personsService: PersonsService,
     private readonly phoneVerifyService: PhoneVerifyService
   ){}
@@ -84,9 +83,39 @@ export class UsersService {
     })
   }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`
-  // }
+  public async updateUnknown (updateUserDto: UpdateUserDto) {
+    const user = await this.users.findOne({
+      where: {
+        login: updateUserDto.login
+      },
+      relations: {
+        person: true
+      }
+    })
+
+    if (!user) {
+      throw new BadRequestException('USER_NOT_FOUND')
+    }
+
+    const verifed = this.phoneVerifyService.verify(updateUserDto.phoneVerify, user.person.phone)
+    if (!verifed) {
+      throw new BadRequestException('VERIFY_INVALID')
+    }
+
+    const salt = randomBytes(3).toString()
+    const password =
+      new SHA3(512)
+        .update(updateUserDto.newPassword)
+        .update(salt)
+        .digest('hex')
+
+    await this.users.update({
+      login: updateUserDto.login
+    }, {
+      password,
+      salt
+    })
+  }
 
   // remove(id: number) {
   //   return `This action removes a #${id} user`

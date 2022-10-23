@@ -53,10 +53,14 @@ export class UsersController {
     }
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto)
-  // }
+  @Patch('@unknown')
+  public async updateUnknown (@Body() updateUserDto: UpdateUserDto) {
+    await this.usersService.updateUnknown(updateUserDto)
+
+    return {
+      success: true
+    }    
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {
