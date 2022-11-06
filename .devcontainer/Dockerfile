@@ -13,5 +13,3 @@ RUN n lts
 RUN npm i -g pnpm
 
 EXPOSE 3000
-# RUN openssl ecparam -name prime256v1 -genkey -noout -out keys/private.pem
-# RUN openssl ec -in keys/private.pem -pubout -out keys/public.pem

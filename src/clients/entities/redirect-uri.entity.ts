@@ -3,32 +3,32 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from 'typeorm'
 import { Client } from './client.entity'
 
 @Entity({
-  name: 'redirect_uris',
+  name: 'redirect_uris'
 })
 export class RedirectURI {
   @PrimaryGeneratedColumn('increment', {
     name: 'redirect_uris_id',
     type: 'int',
     unsigned: true,
-    primaryKeyConstraintName: 'PK_redirect_uris_id',
+    primaryKeyConstraintName: 'PK_redirect_uris_id'
   })
   public readonly id: number
 
   @Column({
     name: 'redirect_uris_url',
     type: 'varchar',
-    length: 100,
+    length: 100
   })
   public readonly uri: string
 
   @Column({
     name: 'clients_id',
-    type: 'uuid',
+    type: 'uuid'
   })
   public readonly clientId: string
 
@@ -39,7 +39,7 @@ export class RedirectURI {
   @JoinColumn({
     name: 'clients_id',
     referencedColumnName: 'id',
-    foreignKeyConstraintName: 'FK_redirect_uris_clients',
+    foreignKeyConstraintName: 'FK_redirect_uris_clients'
   })
   public readonly client: Client
 }

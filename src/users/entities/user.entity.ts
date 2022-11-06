@@ -1,6 +1,13 @@
-import { Client } from "src/clients/entities/client.entity";
-import { Person } from "src/persons/entities/person.entity";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Client } from '../../clients/entities/client.entity'
+import { Person } from '../../persons/entities/person.entity'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 
 @Entity({
   name: 'users'
@@ -80,7 +87,7 @@ export class User {
   @OneToOne(() => Person, {
     nullable: false,
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+    onUpdate: 'CASCADE'
   })
   @JoinColumn({
     name: 'persons_id',

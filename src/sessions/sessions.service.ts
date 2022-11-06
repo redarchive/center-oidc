@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import SHA3 from 'sha3';
-import { AuthService } from 'src/auth/auth.service';
-import { PersonType } from 'src/persons/entities/person.entity';
-import { UsersService } from 'src/users/users.service';
-import { CreateSessionDto } from './dto/create-session.dto';
+import { BadRequestException, Injectable } from '@nestjs/common'
+import SHA3 from 'sha3'
+import { AuthService } from '../auth/auth.service'
+import { PersonType } from '../persons/entities/person.entity'
+import { UsersService } from '../users/users.service'
+import { CreateSessionDto } from './dto/create-session.dto'
 
 @Injectable()
 export class SessionsService {
@@ -12,18 +12,21 @@ export class SessionsService {
     private readonly authService: AuthService
   ) {}
 
-  public async create (createSessionDto: CreateSessionDto) {
-    const user = await this.usersService.findOneByLogin(PersonType[createSessionDto.type], createSessionDto.login, false)
+  public async create (createSessionDto: CreateSessionDto): Promise<string> {
+    const user = await this.usersService.findOneByLogin(
+      PersonType[createSessionDto.type],
+      createSessionDto.login,
+      false
+    )
 
-    if (!user) {
+    if (user === null) {
       throw new BadRequestException('ID_OR_PASSWORD_INVALID')
     }
 
-    const password =
-      new SHA3(512)
-        .update(createSessionDto.password)
-        .update(user.salt)
-        .digest('hex')
+    const password = new SHA3(512)
+      .update(createSessionDto.password)
+      .update(user.salt)
+      .digest('hex')
 
     if (password !== user.password) {
       throw new BadRequestException('ID_OR_PASSWORD_INVALID')

@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { PhoneVerifyService } from './phone-verify.service';
-import { PhoneVerifyController } from './phone-verify.controller';
-import { RedisModule } from 'src/redis/redis.module';
-import { PersonsModule } from 'src/persons/persons.module';
-import { ConfigModule } from '@nestjs/config';
+import { Module } from '@nestjs/common'
+import { PhoneVerifyService } from './phone-verify.service'
+import { PhoneVerifyController } from './phone-verify.controller'
+import { RedisModule } from '../redis/redis.module'
+import { PersonsModule } from '../persons/persons.module'
+import { ConfigModule } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
-import { readFileSync } from 'fs';
+import { readFileSync } from 'fs'
 
 @Module({
   imports: [

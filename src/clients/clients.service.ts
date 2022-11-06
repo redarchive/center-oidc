@@ -1,7 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException,
+  NotFoundException
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { randomBytes } from 'crypto'
@@ -14,45 +14,45 @@ import { Scope, ScopeTypes } from './entities/scope.entity'
 
 @Injectable()
 export class ClientsService {
-  constructor(
+  constructor (
     @InjectRepository(Client)
     private readonly clients: Repository<Client>,
     @InjectRepository(Scope)
     private readonly scopes: Repository<Scope>,
     @InjectRepository(RedirectURI)
-    private readonly redirectURIs: Repository<RedirectURI>,
+    private readonly redirectURIs: Repository<RedirectURI>
   ) {}
 
-  public async create(userId: number, createClientDto: CreateClientDto) {
+  public async create (userId: number, createClientDto: CreateClientDto) {
     const secret = randomBytes(15).toString('hex')
 
     const { generatedMaps } = await this.clients.insert({
       name: createClientDto.name,
       secret,
-      userId,
+      userId
     })
 
     for (const { reason, type } of createClientDto.scopes) {
       await this.scopes.insert({
         clientId: generatedMaps[0].id,
         reason,
-        type: ScopeTypes[type],
+        type: ScopeTypes[type]
       })
     }
 
     for (const uri of createClientDto.redirectUrls) {
       await this.redirectURIs.insert({
         clientId: generatedMaps[0].id,
-        uri,
+        uri
       })
     }
   }
 
-  public findAllMine(userId: number) {
-    return this.clients.findBy({ userId })
+  public async findAllMine (userId: number) {
+    return await this.clients.findBy({ userId })
   }
 
-  public async findOne(id: string, hideSecure = true, userId?: number) {
+  public async findOne (id: string, hideSecure = true, userId?: number) {
     console.log()
     const client = await this.clients.findOne({
       select: hideSecure
@@ -63,10 +63,10 @@ export class ClientsService {
             redirectUrls: true,
             scopes: true,
             secret: true,
-            userId: true,
+            userId: true
           },
       where: {
-        id,
+        id
       },
       relations: {
         redirectUrls: true,
@@ -85,10 +85,10 @@ export class ClientsService {
     return client
   }
 
-  public async update(
+  public async update (
     id: string,
     userId: number,
-    updateClientDto: UpdateClientDto,
+    updateClientDto: UpdateClientDto
   ) {
     const client = await this.clients.findOneBy({ id })
     if (!client) {
@@ -102,8 +102,8 @@ export class ClientsService {
     await this.clients.update(
       { id },
       {
-        name: updateClientDto.name,
-      },
+        name: updateClientDto.name
+      }
     )
 
     await this.scopes.delete({ clientId: id })
@@ -111,7 +111,7 @@ export class ClientsService {
       await this.scopes.insert({
         clientId: id,
         reason,
-        type: ScopeTypes[type],
+        type: ScopeTypes[type]
       })
     }
 
@@ -119,12 +119,12 @@ export class ClientsService {
     for (const uri of updateClientDto.redirectUrls) {
       await this.redirectURIs.insert({
         clientId: id,
-        uri,
+        uri
       })
     }
   }
 
-  public async remove(id: string, userId: number) {
+  public async remove (id: string, userId: number) {
     const client = await this.clients.findOneBy({ id })
 
     if (!client) {

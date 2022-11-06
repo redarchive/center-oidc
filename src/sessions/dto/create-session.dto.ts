@@ -1,5 +1,5 @@
-import { IsAscii, IsIn, IsString, Length } from "class-validator"
-import { PersonType } from "src/persons/entities/person.entity"
+import { IsAscii, IsIn, IsString, Length } from 'class-validator'
+import { PersonType } from '../../persons/entities/person.entity'
 
 export class CreateSessionDto {
   @IsString()
@@ -13,10 +13,6 @@ export class CreateSessionDto {
   public readonly password: string
 
   @IsString()
-  @IsIn([
-    'CURRENT_STUDENT',
-    'GRADUATED_STUDENT',
-    'TEACHER'
-  ])
+  @IsIn(['CURRENT_STUDENT', 'GRADUATED_STUDENT', 'TEACHER'])
   public readonly type: keyof typeof PersonType
 }

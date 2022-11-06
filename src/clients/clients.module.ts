@@ -5,14 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Client } from './entities/client.entity'
 import { RedirectURI } from './entities/redirect-uri.entity'
 import { Scope } from './entities/scope.entity'
-import { UsersModule } from 'src/users/users.module'
+import { UsersModule } from '../users/users.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Client, RedirectURI, Scope]),
-    UsersModule,
+    UsersModule
   ],
   controllers: [ClientsController],
-  providers: [ClientsService],
+  providers: [ClientsService]
 })
 export class ClientsModule {}

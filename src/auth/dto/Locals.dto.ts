@@ -1,7 +1,9 @@
-import { Request } from "express"
+import { Request } from 'express'
 
 export class LocalsDto {
-  userId?: number
+  userId: number
 }
 
-export type TypedRequest = Request & LocalsDto
+export type TypedRequest = Request & Partial<LocalsDto>
+
+export type GuardedRequest = Request & LocalsDto

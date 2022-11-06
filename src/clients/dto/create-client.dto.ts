@@ -5,7 +5,7 @@ import {
   Length,
   MaxLength,
   MinLength,
-  ValidateNested,
+  ValidateNested
 } from 'class-validator'
 import { ScopeTypes } from '../entities/scope.entity'
 import { Type } from 'class-transformer'
@@ -33,7 +33,7 @@ export class CreateScopeDto {
     'PHONE_NUMBER',
     'GENDER',
     'CLASS_INFO',
-    'DORMITORY',
+    'DORMITORY'
   ])
   @IsString()
   public readonly type: keyof typeof ScopeTypes

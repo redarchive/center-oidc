@@ -1,21 +1,27 @@
-import { User } from "src/users/entities/user.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from '../../users/entities/user.entity'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 
 export enum PersonType {
   CURRENT_STUDENT = 0,
   GRADUATED_STUDENT = 1,
-  TEACHER = 2
+  TEACHER = 2,
 }
 
 export enum PersonGender {
   MALE = 'M',
-  FEMALE = 'F'
+  FEMALE = 'F',
 }
 
 export enum PersonGrade {
   FIRST_GRADE = 1,
   SECOND_GRADE = 2,
-  THIRD_GRADE = 3
+  THIRD_GRADE = 3,
 }
 
 @Entity({
@@ -99,8 +105,8 @@ export class Person {
     name: 'users_id',
     type: 'int',
     unsigned: true,
-    nullable: true,
-  })  
+    nullable: true
+  })
   public readonly userId?: number
 
   @OneToOne(() => User, {

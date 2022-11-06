@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Person, PersonType } from './entities/person.entity';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { Person, PersonType } from './entities/person.entity'
 
 @Injectable()
 export class PersonsService {
@@ -10,19 +10,10 @@ export class PersonsService {
     private readonly persons: Repository<Person>
   ) {}
 
-  // create(createPersonDto: CreatePersonDto) {
-  //   return 'This action adds a new person';
-  // }
-
-  // findAll() {
-  //   return `This action returns all persons`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} person`;
-  // }
-
-  public async findOneByPhone (type: PersonType, phone: string): Promise<Person | undefined> {
+  public async findOneByPhone (
+    type: PersonType,
+    phone: string
+  ): Promise<Person | null> {
     return await this.persons.findOne({
       relations: {
         user: true
@@ -34,15 +25,7 @@ export class PersonsService {
     })
   }
 
-  // update(id: number, updatePersonDto: UpdatePersonDto) {
-  //   return `This action updates a #${id} person`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} person`;
-  // }
-
-  public async assignUser (id: number, userId: number) {
+  public async assignUser (id: number, userId: number): Promise<void> {
     await this.persons.update({ id }, { userId })
   }
 }

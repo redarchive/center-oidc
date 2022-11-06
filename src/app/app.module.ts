@@ -1,14 +1,14 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthMiddleware } from 'src/auth/auth.middleware';
-import { AuthModule } from 'src/auth/auth.module';
-import { ClientsModule } from 'src/clients/clients.module';
-import { PersonsModule } from 'src/persons/persons.module';
-import { PhoneVerifyModule } from 'src/phone-verify/phone-verify.module';
-import { SessionsModule } from 'src/sessions/sessions.module';
-import { UsersModule } from 'src/users/users.module';
-import { DBConnService } from './dbconn/dbconn.service';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { AuthMiddleware } from '../auth/auth.middleware'
+import { AuthModule } from '../auth/auth.module'
+import { ClientsModule } from '../clients/clients.module'
+import { PersonsModule } from '../persons/persons.module'
+import { PhoneVerifyModule } from '../phone-verify/phone-verify.module'
+import { SessionsModule } from '../sessions/sessions.module'
+import { UsersModule } from '../users/users.module'
+import { DBConnService } from './dbconn/dbconn.service'
 
 @Module({
   imports: [
@@ -27,9 +27,7 @@ import { DBConnService } from './dbconn/dbconn.service';
   ]
 })
 export class AppModule implements NestModule {
-  public configure (consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes('*')
+  public configure (consumer: MiddlewareConsumer): void {
+    consumer.apply(AuthMiddleware).forRoutes('*')
   }
 }

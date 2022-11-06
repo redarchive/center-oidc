@@ -1,4 +1,10 @@
-import { IsHexadecimal, IsPhoneNumber, IsString, IsUppercase, Length } from "class-validator";
+import {
+  IsHexadecimal,
+  IsPhoneNumber,
+  IsString,
+  IsUppercase,
+  Length
+} from 'class-validator'
 
 export class SignPhoneVerifyDto {
   @IsString()

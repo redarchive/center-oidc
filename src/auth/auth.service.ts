@@ -3,27 +3,28 @@ import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
 export class AuthService {
-  constructor (
-    private readonly jwtService: JwtService
-  ) {}
+  constructor (private readonly jwtService: JwtService) {}
 
-  public sign (userId: number) {
-    const token = this.jwtService.sign({}, {
-      audience: userId.toString()
-    })
+  public sign (userId: number): string {
+    const token = this.jwtService.sign(
+      {},
+      {
+        audience: userId.toString()
+      }
+    )
 
     return token
   }
 
-  public verify (token: string, userId?: number) {
+  public verify (token: string, userId?: number): number | null {
     try {
       const payload = this.jwtService.verify(token, {
-        ...(userId ? { audience: userId.toString() } : {})
-      }) as { aud: string }
+        ...(userId !== undefined ? { audience: userId.toString() } : {})
+      })
 
       return parseInt(payload.aud)
     } catch {
-      return false
+      return null
     }
   }
 }

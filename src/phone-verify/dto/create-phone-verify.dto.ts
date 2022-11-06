@@ -1,5 +1,5 @@
-import { IsIn, IsPhoneNumber, IsString, Length } from "class-validator";
-import { PersonType } from "src/persons/entities/person.entity";
+import { IsIn, IsPhoneNumber, IsString, Length } from 'class-validator'
+import { PersonType } from '../../persons/entities/person.entity'
 
 export class CreatePhoneVerifyDto {
   @IsString()
@@ -8,10 +8,6 @@ export class CreatePhoneVerifyDto {
   public readonly phone: string
 
   @IsString()
-  @IsIn([
-    'CURRENT_STUDENT',
-    'GRADUATED_STUDENT',
-    'TEACHER'
-  ])
+  @IsIn(['CURRENT_STUDENT', 'GRADUATED_STUDENT', 'TEACHER'])
   public readonly type: keyof typeof PersonType
 }
