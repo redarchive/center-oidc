@@ -16,7 +16,7 @@ export class DBConnService implements TypeOrmOptionsFactory {
       database: this.configureService.get<string>('DB_SCHEMA', 'center'),
       entities: [],
       autoLoadEntities: true,
-      synchronize: true
+      synchronize: process.env.SYNC_DB !== undefined
     }
   }
 }
