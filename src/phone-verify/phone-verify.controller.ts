@@ -2,25 +2,23 @@ import { Controller, Post, Body, Put } from '@nestjs/common'
 import { PhoneVerifyService } from './phone-verify.service'
 import { CreatePhoneVerifyDto } from './dto/create-phone-verify.dto'
 import { SignPhoneVerifyDto } from './dto/sign-phone-verify.dto'
+import { PResBody } from '../common/ResponseBody'
 
 @Controller('phone-verify')
 export class PhoneVerifyController {
   constructor (private readonly phoneVerifyService: PhoneVerifyService) {}
 
   @Post()
-  async create (@Body() createPhoneVerifyDto: CreatePhoneVerifyDto) {
-    const login = await this.phoneVerifyService.create(createPhoneVerifyDto)
+  public async create (@Body() createPhoneVerifyDto: CreatePhoneVerifyDto): PResBody {
+    await this.phoneVerifyService.create(createPhoneVerifyDto)
 
     return {
-      success: true,
-      data: {
-        login
-      }
+      success: true
     }
   }
 
   @Put()
-  async sign (@Body() verifyPhoneVerifyDto: SignPhoneVerifyDto) {
+  public async sign (@Body() verifyPhoneVerifyDto: SignPhoneVerifyDto): PResBody<{ signedKey: string }> {
     const signedKey = await this.phoneVerifyService.sign(verifyPhoneVerifyDto)
 
     return {

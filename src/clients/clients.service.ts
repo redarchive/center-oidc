@@ -10,7 +10,7 @@ import { CreateClientDto } from './dto/create-client.dto'
 import { UpdateClientDto } from './dto/update-client.dto'
 import { Client } from './entities/client.entity'
 import { RedirectURI } from './entities/redirect-uri.entity'
-import { Scope, ScopeTypes } from './entities/scope.entity'
+import { Scope } from './entities/scope.entity'
 
 @Injectable()
 export class ClientsService {
@@ -23,7 +23,7 @@ export class ClientsService {
     private readonly redirectURIs: Repository<RedirectURI>
   ) {}
 
-  public async create (userId: number, createClientDto: CreateClientDto) {
+  public async create (userId: number, createClientDto: CreateClientDto): Promise<void> {
     const secret = randomBytes(15).toString('hex')
 
     const { generatedMaps } = await this.clients.insert({
@@ -36,11 +36,11 @@ export class ClientsService {
       await this.scopes.insert({
         clientId: generatedMaps[0].id,
         reason,
-        type: ScopeTypes[type]
+        type
       })
     }
 
-    for (const uri of createClientDto.redirectUrls) {
+    for (const uri of createClientDto.redirectUris) {
       await this.redirectURIs.insert({
         clientId: generatedMaps[0].id,
         uri
@@ -48,11 +48,11 @@ export class ClientsService {
     }
   }
 
-  public async findAllMine (userId: number) {
+  public async findAllMine (userId: number): Promise<Client[]> {
     return await this.clients.findBy({ userId })
   }
 
-  public async findOne (id: string, hideSecure = true, userId?: number) {
+  public async findOne (id: string, hideSecure = true, userId?: number): Promise<Client> {
     console.log()
     const client = await this.clients.findOne({
       select: hideSecure
@@ -60,7 +60,7 @@ export class ClientsService {
         : {
             id: true,
             name: true,
-            redirectUrls: true,
+            redirectUris: true,
             scopes: true,
             secret: true,
             userId: true
@@ -69,12 +69,12 @@ export class ClientsService {
         id
       },
       relations: {
-        redirectUrls: true,
+        redirectUris: true,
         scopes: true
       }
     })
 
-    if (!client) {
+    if (client == null) {
       throw new NotFoundException('CLIENT_NOT_FOUND')
     }
 
@@ -89,9 +89,9 @@ export class ClientsService {
     id: string,
     userId: number,
     updateClientDto: UpdateClientDto
-  ) {
+  ): Promise<void> {
     const client = await this.clients.findOneBy({ id })
-    if (!client) {
+    if (client === null) {
       throw new NotFoundException('CLIENT_NOT_FOUND')
     }
 
@@ -111,12 +111,12 @@ export class ClientsService {
       await this.scopes.insert({
         clientId: id,
         reason,
-        type: ScopeTypes[type]
+        type
       })
     }
 
     await this.redirectURIs.delete({ clientId: id })
-    for (const uri of updateClientDto.redirectUrls) {
+    for (const uri of updateClientDto.redirectUris) {
       await this.redirectURIs.insert({
         clientId: id,
         uri
@@ -124,10 +124,10 @@ export class ClientsService {
     }
   }
 
-  public async remove (id: string, userId: number) {
+  public async remove (id: string, userId: number): Promise<void> {
     const client = await this.clients.findOneBy({ id })
 
-    if (!client) {
+    if (client === null) {
       throw new NotFoundException('CLIENT_NOT_FOUND')
     }
 
