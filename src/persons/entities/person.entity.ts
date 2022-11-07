@@ -40,7 +40,8 @@ export class Person {
     name: 'persons_name',
     type: 'varchar',
     length: 5,
-    nullable: false
+    nullable: false,
+    charset: 'utf8mb4'
   })
   public readonly name: string
 

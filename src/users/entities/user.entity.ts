@@ -45,6 +45,7 @@ export class User {
     type: 'char',
     length: 6,
     nullable: false,
+    charset: 'utf8mb4',
     select: false
   })
   public readonly salt: string
@@ -54,6 +55,7 @@ export class User {
     type: 'varchar',
     length: 30,
     nullable: true,
+    charset: 'utf8mb4',
     select: true,
     unique: false
   })
@@ -63,6 +65,7 @@ export class User {
     name: 'users_email',
     type: 'varchar',
     length: 30,
+    charset: 'utf8mb4',
     nullable: true,
     select: false,
     unique: false
