@@ -17,7 +17,7 @@ export class CreateClientDto {
 
   @IsString({ each: true })
   @MaxLength(100, { each: true })
-  public readonly redirectUrls: string[]
+  public readonly redirectUris: string[]
 
   @IsArray()
   @ValidateNested({ each: true })

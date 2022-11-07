@@ -57,7 +57,7 @@ export class Client {
   @OneToMany(() => RedirectURI, (uri) => uri.client, {
     eager: true
   })
-  public readonly redirectUrls: RedirectURI[]
+  public readonly redirectUris: RedirectURI[]
 
   @OneToMany(() => Scope, (scope) => scope.client, {
     eager: true

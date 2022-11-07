@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
       context.getHandler()
     )
 
-    if (require !== undefined) {
+    if (require === undefined) {
       return true
     }
 

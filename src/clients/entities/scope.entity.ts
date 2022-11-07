@@ -34,7 +34,7 @@ export class Scope {
     unsigned: true,
     nullable: false
   })
-  public readonly type: ScopeTypes
+  public readonly type: keyof typeof ScopeTypes
 
   @Column({
     name: 'scopes_reason',
