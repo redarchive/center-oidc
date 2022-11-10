@@ -27,7 +27,6 @@ export class CreateClientDto {
 
 export class CreateScopeDto {
   @IsIn([
-    'IDENTITY',
     'REAL_NAME',
     'EMAIL',
     'PHONE_NUMBER',

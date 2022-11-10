@@ -8,7 +8,7 @@ import {
 import { Client } from './client.entity'
 
 export enum ScopeTypes {
-  IDENTITY = 0,
+  OPENID = 0,
   REAL_NAME,
   EMAIL,
   PHONE_NUMBER,

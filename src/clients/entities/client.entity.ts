@@ -28,15 +28,6 @@ export class Client {
   public readonly name: string
 
   @Column({
-    name: 'clients_secret',
-    type: 'char',
-    length: '30',
-    nullable: false,
-    select: false
-  })
-  public readonly secret: string
-
-  @Column({
     name: 'users_id',
     type: 'int',
     unsigned: true
