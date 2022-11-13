@@ -8,6 +8,8 @@ import { ValidationPipe } from '@nestjs/common'
 async function bootstrap (): Promise<void> {
   const app = await NestFactory.create(AppModule)
 
+  app.setGlobalPrefix('/api')
+
   app.use(morgan('combined'))
   app.use(cookieParser())
   app.use(compression())
