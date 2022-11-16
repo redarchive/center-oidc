@@ -8,6 +8,7 @@ import {
 } from 'typeorm'
 import { RedirectURI } from './redirect-uri.entity'
 import { Scope } from './scope.entity'
+import { Service } from '../../services/entities/service.entity'
 
 @Entity({
   name: 'clients'
@@ -44,6 +45,24 @@ export class Client {
     foreignKeyConstraintName: 'FK_clients_users'
   })
   public readonly user?: User
+
+  @Column({
+    name: 'services_id',
+    type: 'int',
+    unsigned: true
+  })
+  public readonly serviceId: number
+
+  @OneToMany(() => Service, (service) => service.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  @JoinColumn({
+    name: 'services_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: 'FK_clients_services'
+  })
+  public readonly service: Service
 
   @OneToMany(() => RedirectURI, (uri) => uri.client, {
     eager: true
