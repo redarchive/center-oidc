@@ -17,7 +17,7 @@ export enum ServiceTypes {
 })
 export class Service {
   @PrimaryGeneratedColumn('increment', {
-    name: 'services_id',
+    name: 'services_idx',
     type: 'int',
     unsigned: true,
     primaryKeyConstraintName: 'PK_services_id'
@@ -47,7 +47,7 @@ export class Service {
   public readonly userId: number
 
   @OneToMany(() => User, (user) => user.id, {
-    onDelete: 'CASCADE',
+    onDelete: 'SET NULL',
     onUpdate: 'CASCADE'
   })
   @JoinColumn({
