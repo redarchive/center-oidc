@@ -22,10 +22,11 @@ export class ClientsService {
     private readonly redirectURIs: Repository<RedirectURI>
   ) {}
 
-  public async create (userId: number, createClientDto: CreateClientDto): Promise<void> {
+  public async create (userId: number, createClientDto: CreateClientDto, serviceId?: number): Promise<void> {
     const { generatedMaps } = await this.clients.insert({
       name: createClientDto.name,
-      userId
+      userId,
+      serviceId
     })
 
     await this.scopes.insert({

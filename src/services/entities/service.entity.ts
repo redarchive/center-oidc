@@ -44,7 +44,7 @@ export class Service {
     type: 'int',
     unsigned: true
   })
-  public readonly userId: number
+  public readonly userId?: number
 
   @OneToMany(() => User, (user) => user.id, {
     onDelete: 'SET NULL',
