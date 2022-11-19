@@ -28,4 +28,8 @@ export class PersonsService {
   public async assignUser (id: number, userId: number): Promise<void> {
     await this.persons.update({ id }, { userId })
   }
+
+  public async getAllUser (): Promise<Person[]> {
+    return await this.persons.find()
+  }
 }
