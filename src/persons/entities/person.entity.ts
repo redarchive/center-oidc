@@ -100,7 +100,7 @@ export class Person {
     type: 'varchar',
     nullable: true
   })
-  public readonly dormitoryRoomNumber?: number
+  public readonly dormitoryRoomNumber?: string
 
   @Column({
     name: 'users_id',
