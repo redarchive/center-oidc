@@ -98,6 +98,7 @@ export class Person {
   @Column({
     name: 'persons_dormitoryroomnumber',
     type: 'varchar',
+    charset: 'utf8mb4',
     nullable: true
   })
   public readonly dormitoryRoomNumber?: string
