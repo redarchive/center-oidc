@@ -4,6 +4,7 @@ import { AuthGuard } from '../auth/auth.guard'
 import { GuardedRequest } from '../auth/dto/Locals.dto'
 import { PResBody } from '../common/ResponseBody'
 import { UsersService } from '../users/users.service'
+import { ApplyDiffDto } from './dto/apply-diff.dto'
 import { CalcDiffDto } from './dto/calc-diff.dto'
 import { PersonType } from './entities/person.entity'
 import { PersonsService } from './persons.service'
@@ -45,6 +46,22 @@ export class PersonsController {
       data: {
         diff
       }
+    }
+  }
+
+  @Post('@apply')
+  @UseGuards(AuthGuard)
+  public async applyDiffChanges (@Req() req: GuardedRequest, @Body() body: ApplyDiffDto): PResBody {
+    const user = await this.usersService.findOne(req.userId, true)
+
+    if (user?.person?.type !== PersonType.TEACHER) {
+      throw new UnauthorizedException('ONLY_TEACHER_CAN_MODIFY_FULL_DATA')
+    }
+
+    await this.personsService.applyDiffData(body)
+
+    return {
+      success: true
     }
   }
 }

@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { ApplyDiffDto } from './dto/apply-diff.dto'
 import { Person, PersonGender, PersonType } from './entities/person.entity'
 
 @Injectable()
@@ -202,8 +203,6 @@ export class PersonsService {
               findRow[6].replace(/-/g, '') !== person.phone ||
               findRow[7] !== studentGender
 
-            console.log(parseInt(findRow[2]), person.gender ?? NaN)
-
             if (isModified) {
               willModifyStudent.push(findRow.slice(0, 8))
             }
@@ -262,7 +261,7 @@ export class PersonsService {
       }
     }
 
-    return {
+    const result = {
       newStudent,
       newGraduated,
       newTeacher,
@@ -276,6 +275,175 @@ export class PersonsService {
       willModifyGraduated,
       willModifyTeacher,
       willDelete
+    }
+
+    const allIds = Object.values(result)
+      .flat()
+      .map((v) => v[0])
+      .flat()
+
+    const duplicatedIds =
+      allIds.filter((v) =>
+        allIds.filter((v2) => v === v2).length > 1)
+
+    if (duplicatedIds.length > 0) {
+      throw new BadRequestException('DUPLICATED_IDS_ON_#' + duplicatedIds.join('_'))
+    }
+
+    return result
+  }
+
+  public async applyDiffData (data: ApplyDiffDto): Promise<void> {
+    const parsePhone = (v: string): string => v.replace(/-/g, '')
+
+    for (const student of data.newStudent) {
+      let studentGender: PersonGender | undefined
+
+      if (student[7] === '남') {
+        studentGender = PersonGender.MALE
+      }
+
+      if (student[7] === '여') {
+        studentGender = PersonGender.FEMALE
+      }
+
+      await this.persons.insert({
+        name: student[1],
+        grade: parseInt(student[2]),
+        classroom: parseInt(student[3]),
+        classNumber: parseInt(student[4]),
+        dormitoryRoomNumber: student[5],
+        phone: parsePhone(student[6]),
+        gender: studentGender,
+        type: PersonType.CURRENT_STUDENT
+      })
+    }
+
+    for (const graduated of data.newGraduated) {
+      await this.persons.insert({
+        name: graduated[1],
+        phone: parsePhone(graduated[2]),
+        type: PersonType.GRADUATED_STUDENT
+      })
+    }
+
+    for (const teacher of data.newTeacher) {
+      await this.persons.insert({
+        name: teacher[1],
+        phone: parsePhone(teacher[2]),
+        type: PersonType.TEACHER
+      })
+    }
+
+    const toStudent = [...data.graduatedToStudent, ...data.teacherToStudent]
+
+    for (const student of toStudent) {
+      let studentGender: PersonGender | undefined
+
+      if (student[7] === '남') {
+        studentGender = PersonGender.MALE
+      }
+
+      if (student[7] === '여') {
+        studentGender = PersonGender.FEMALE
+      }
+
+      await this.persons.update({
+        id: parseInt(student[0])
+      }, {
+        name: student[1],
+        grade: parseInt(student[2]),
+        classroom: parseInt(student[3]),
+        classNumber: parseInt(student[4]),
+        dormitoryRoomNumber: student[5],
+        phone: parsePhone(student[6]),
+        gender: studentGender,
+        type: PersonType.CURRENT_STUDENT
+      })
+    }
+
+    const toGraduated = [...data.studentToGraduated, ...data.teacherToGraduated]
+
+    for (const graduated of toGraduated) {
+      await this.persons.update({
+        id: parseInt(graduated[0])
+      }, {
+        name: graduated[1],
+        phone: parsePhone(graduated[2]),
+        type: PersonType.GRADUATED_STUDENT,
+        classNumber: undefined,
+        dormitoryRoomNumber: undefined,
+        classroom: undefined,
+        gender: undefined,
+        grade: undefined
+      })
+    }
+
+    const toTeacher = [...data.studentToTeacher, ...data.graduatedToTeacher]
+    for (const teacher of toTeacher) {
+      await this.persons.update({
+        id: parseInt(teacher[0])
+      }, {
+        name: teacher[1],
+        phone: parsePhone(teacher[2]),
+        type: PersonType.TEACHER,
+        classNumber: undefined,
+        dormitoryRoomNumber: undefined,
+        classroom: undefined,
+        gender: undefined,
+        grade: undefined
+      })
+    }
+
+    for (const student of data.willModifyStudent) {
+      let studentGender: PersonGender | undefined
+
+      if (student[7] === '남') {
+        studentGender = PersonGender.MALE
+      }
+
+      if (student[7] === '여') {
+        studentGender = PersonGender.FEMALE
+      }
+
+      await this.persons.update({
+        id: parseInt(student[0])
+      }, {
+        name: student[1],
+        grade: parseInt(student[2]),
+        classroom: parseInt(student[3]),
+        classNumber: parseInt(student[4]),
+        dormitoryRoomNumber: student[5],
+        phone: parsePhone(student[6]),
+        gender: studentGender,
+        type: PersonType.CURRENT_STUDENT
+      })
+    }
+
+    for (const graduated of data.willModifyGraduated) {
+      await this.persons.update({
+        id: parseInt(graduated[0])
+      }, {
+        name: graduated[1],
+        phone: parsePhone(graduated[2]),
+        type: PersonType.GRADUATED_STUDENT
+      })
+    }
+
+    for (const teacher of data.willModifyTeacher) {
+      await this.persons.update({
+        id: parseInt(teacher[0])
+      }, {
+        name: teacher[1],
+        phone: parsePhone(teacher[2]),
+        type: PersonType.TEACHER
+      })
+    }
+
+    for (const deletex of data.willDelete) {
+      await this.persons.delete({
+        id: parseInt(deletex[0])
+      })
     }
   }
 }
