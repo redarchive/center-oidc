@@ -133,7 +133,7 @@ export class PersonsService {
 
       if (Number.isNaN(parseInt(graduateColumns[0]))) {
         if (graduateColumns[1] !== undefined && graduateColumns[1].length > 0) {
-          if (graduateColumns[6] === undefined || parsePhone(graduateColumns[6]).length !== 11) {
+          if (graduateColumns[2] === undefined || parsePhone(graduateColumns[2]).length !== 11) {
             throw new BadRequestException('PHONE_NUMBER_INVALID_ON_#' + graduateColumns[1])
           }
 
@@ -143,7 +143,7 @@ export class PersonsService {
 
       if (Number.isNaN(parseInt(teacherColumns[0]))) {
         if (teacherColumns[1] !== undefined && teacherColumns[1].length > 0) {
-          if (teacherColumns[6] === undefined || parsePhone(teacherColumns[6]).length !== 11) {
+          if (teacherColumns[2] === undefined || parsePhone(teacherColumns[2]).length !== 11) {
             throw new BadRequestException('PHONE_NUMBER_INVALID_ON_#' + teacherColumns[1])
           }
 

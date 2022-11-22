@@ -95,7 +95,7 @@ export class UsersService {
   public async updateUnknown (updateUserDto: UpdateUserDto): Promise<void> {
     const user = await this.users.findOne({
       where: {
-        login: updateUserDto.login
+        id: updateUserDto.id
       },
       relations: {
         person: true
@@ -135,7 +135,7 @@ export class UsersService {
 
     await this.users.update(
       {
-        login: updateUserDto.login
+        id: updateUserDto.id
       },
       {
         password,

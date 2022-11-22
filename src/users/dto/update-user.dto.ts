@@ -1,17 +1,18 @@
 import {
   IsAscii,
   IsEmail,
+  IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   Length,
   MaxLength
 } from 'class-validator'
 
 export class UpdateUserDto {
-  @IsString()
-  @Length(5, 30)
-  @IsAscii()
-  public readonly login: string
+  @IsNumber()
+  @IsPositive()
+  public readonly id: number
 
   @IsString()
   @IsAscii()

@@ -73,6 +73,14 @@ export class User {
   public readonly email?: string
 
   @Column({
+    name: 'users_profile_image',
+    type: 'varchar',
+    length: 100,
+    nullable: true
+  })
+  public readonly profileImage?: string
+
+  @Column({
     name: 'users_createdat',
     type: 'timestamp',
     nullable: false,
