@@ -67,7 +67,7 @@ export class UsersService {
   //   return `This action returns all users`
   // }
 
-  public async findOne (id: number, person = true): Promise<User | null> {
+  public async findOne (id: number, { person = true }): Promise<User | null> {
     return await this.users.findOne({
       where: { id },
       relations: { person }

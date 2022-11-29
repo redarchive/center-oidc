@@ -7,6 +7,7 @@ import { ClientsModule } from '../clients/clients.module'
 import { FilesModule } from '../files/files.module'
 import { PersonsModule } from '../persons/persons.module'
 import { PhoneVerifyModule } from '../phone-verify/phone-verify.module'
+import { ServicesModule } from '../services/services.module'
 import { SessionsModule } from '../sessions/sessions.module'
 import { TokensModule } from '../tokens/tokens.module'
 import { UsersModule } from '../users/users.module'
@@ -27,7 +28,8 @@ import { DBConnService } from './dbconn/dbconn.service'
     SessionsModule,
     ClientsModule,
     TokensModule,
-    FilesModule
+    FilesModule,
+    ServicesModule
   ]
 })
 export class AppModule implements NestModule {

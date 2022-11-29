@@ -14,7 +14,7 @@ export class TokensService {
   ) {}
 
   public async create (userId: number, createTokenDto: CreateTokenDto, iss: string): Promise<string> {
-    const user = await this.usersService.findOne(userId, true)
+    const user = await this.usersService.findOne(userId, { person: true })
     const client = await this.clientsService.findOne(createTokenDto.clientId)
 
     if (user === null || user.person === undefined) {

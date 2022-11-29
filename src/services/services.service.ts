@@ -20,6 +20,12 @@ export class ServicesService {
     private readonly clientService: ClientsService
   ) {}
 
+  public async getByUserId (userId: number): Promise<Service[]> {
+    const services = await this.services.findBy({ userId })
+
+    return services
+  }
+
   public async create (userId: number, createServiceDto: CreateServiceDto): Promise<void> {
     const { generatedMaps } = await this.services.insert({
       ...createServiceDto,

@@ -6,7 +6,8 @@ import {
   Patch,
   Req,
   UseGuards,
-  NotFoundException
+  NotFoundException,
+  Param
 } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -32,7 +33,7 @@ export class UsersController {
   @Get('@me')
   @UseGuards(AuthGuard)
   public async findMe (@Req() req: GuardedRequest): PResBody<{ me: User }> {
-    const me = await this.usersService.findOne(req.userId, true)
+    const me = await this.usersService.findOne(req.userId, { person: true })
     if (me === null) {
       throw new NotFoundException('USER_NOT_FOUND')
     }
@@ -40,6 +41,22 @@ export class UsersController {
     return {
       success: true,
       data: { me }
+    }
+  }
+
+  @Get(':id')
+  public async findById (@Param('id') id: number, @Req() req: GuardedRequest): PResBody<{ user: User, me: boolean }> {
+    const user = await this.usersService.findOne(id, { person: true })
+    if (user === null) {
+      throw new NotFoundException('USER_NOT_FOUND')
+    }
+
+    return {
+      success: true,
+      data: {
+        user,
+        me: req.userId === user.id
+      }
     }
   }
 

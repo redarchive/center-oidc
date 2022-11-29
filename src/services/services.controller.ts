@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, NotFoundException } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, NotFoundException, Query } from '@nestjs/common'
 import { ServicesService } from './services.service'
 import { CreateServiceDto } from './dto/create-service.dto'
 import { UpdateServiceDto } from './dto/update-service.dto'
@@ -24,6 +24,18 @@ export class ServicesController {
   @Get()
   public async findAll (): PResBody<{ services: Service[] }> {
     const services = await this.servicesService.findAll()
+
+    return {
+      success: true,
+      data: {
+        services
+      }
+    }
+  }
+
+  @Get('@by-userId')
+  public async findOneByUserId (@Query('id') id): PResBody<{ services: Service[] }> {
+    const services = await this.servicesService.getByUserId(+id)
 
     return {
       success: true,

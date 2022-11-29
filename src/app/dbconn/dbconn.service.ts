@@ -17,6 +17,7 @@ export class DBConnService implements TypeOrmOptionsFactory {
       entities: [],
       autoLoadEntities: true,
       synchronize: process.env.SYNC_DB !== undefined
+      // logging: true
     }
   }
 }

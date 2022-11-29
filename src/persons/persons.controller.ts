@@ -19,7 +19,7 @@ export class PersonsController {
   @Get('data.csv')
   @UseGuards(AuthGuard)
   public async getPersonsCSV (@Req() req: GuardedRequest, @Res({ passthrough: true }) res: Response): Promise<string> {
-    const user = await this.usersService.findOne(req.userId, true)
+    const user = await this.usersService.findOne(req.userId, { person: true })
 
     if (user?.person?.type !== PersonType.TEACHER) {
       throw new UnauthorizedException('ONLY_TEACHER_CAN_GET_FULL_DATA')
@@ -33,7 +33,7 @@ export class PersonsController {
   @Post('@diff')
   @UseGuards(AuthGuard)
   public async calcDiffPersonsCSV (@Req() req: GuardedRequest, @Body() body: CalcDiffDto): PResBody<{ diff: any }> {
-    const user = await this.usersService.findOne(req.userId, true)
+    const user = await this.usersService.findOne(req.userId, { person: true })
 
     if (user?.person?.type !== PersonType.TEACHER) {
       throw new UnauthorizedException('ONLY_TEACHER_CAN_GET_FULL_DATA')
@@ -52,7 +52,7 @@ export class PersonsController {
   @Post('@apply')
   @UseGuards(AuthGuard)
   public async applyDiffChanges (@Req() req: GuardedRequest, @Body() body: ApplyDiffDto): PResBody {
-    const user = await this.usersService.findOne(req.userId, true)
+    const user = await this.usersService.findOne(req.userId, { person: true })
 
     if (user?.person?.type !== PersonType.TEACHER) {
       throw new UnauthorizedException('ONLY_TEACHER_CAN_MODIFY_FULL_DATA')
