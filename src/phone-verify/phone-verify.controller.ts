@@ -9,14 +9,11 @@ export class PhoneVerifyController {
   constructor (private readonly phoneVerifyService: PhoneVerifyService) {}
 
   @Post()
-  public async create (@Body() createPhoneVerifyDto: CreatePhoneVerifyDto): PResBody<{ id: number }> {
-    const id = await this.phoneVerifyService.create(createPhoneVerifyDto)
+  public async create (@Body() createPhoneVerifyDto: CreatePhoneVerifyDto): PResBody {
+    await this.phoneVerifyService.create(createPhoneVerifyDto)
 
     return {
-      success: true,
-      data: {
-        id
-      }
+      success: true
     }
   }
 

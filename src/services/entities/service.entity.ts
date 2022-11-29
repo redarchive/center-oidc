@@ -128,5 +128,5 @@ export class Service {
     unsigned: true,
     nullable: false
   })
-  public readonly type: number
+  public readonly type: ServiceTypes
 }
