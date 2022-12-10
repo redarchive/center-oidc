@@ -26,6 +26,12 @@ export class ServicesService {
     return services
   }
 
+  public async getTags (): Promise<Tag[]> {
+    const tags = await this.tags.find()
+
+    return tags
+  }
+
   public async create (userId: number, createServiceDto: CreateServiceDto): Promise<void> {
     const { generatedMaps } = await this.services.insert({
       ...createServiceDto,
