@@ -24,7 +24,9 @@ export class Client {
     name: 'clients_name',
     type: 'varchar',
     length: 30,
-    nullable: false
+    nullable: false,
+    charset: 'utf8mb4'
+
   })
   public readonly name: string
 

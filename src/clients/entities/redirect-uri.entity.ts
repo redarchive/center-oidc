@@ -22,7 +22,9 @@ export class RedirectURI {
   @Column({
     name: 'redirect_uris_url',
     type: 'varchar',
-    length: 100
+    length: 100,
+    charset: 'utf8mb4'
+
   })
   public readonly uri: string
 

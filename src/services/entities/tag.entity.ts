@@ -16,7 +16,8 @@ export class Tag {
   @Column({
     name: 'tags_label',
     type: 'varchar',
-    length: 10
+    length: 10,
+    charset: 'utf8mb4'
   })
   public readonly label: string
 

@@ -40,7 +40,8 @@ export class Scope {
     name: 'scopes_reason',
     type: 'varchar',
     length: 50,
-    nullable: false
+    nullable: false,
+    charset: 'utf8mb4'
   })
   public readonly reason: string
 

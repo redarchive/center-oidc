@@ -25,17 +25,28 @@ export class Service {
   public readonly id: number
 
   @Column({
+    name: 'services_views',
+    type: 'int',
+    unsigned: true,
+    default: 0,
+    nullable: false
+  })
+  public readonly views: number
+
+  @Column({
     name: 'services_name',
     type: 'varchar',
     length: 30,
-    nullable: false
+    nullable: false,
+    charset: 'utf8mb4'
   })
   public readonly name: string
 
   @Column({
     name: 'services_description',
     type: 'text',
-    nullable: false
+    nullable: false,
+    charset: 'utf8mb4'
   })
   public readonly description: string
 
@@ -72,7 +83,9 @@ export class Service {
     name: 'service_logo_url',
     nullable: false,
     type: 'varchar',
-    length: 100
+    length: 100,
+    charset: 'utf8mb4'
+
   })
   public readonly logoUrl: string
 
@@ -80,7 +93,9 @@ export class Service {
     name: 'service_promotion_img_url',
     nullable: false,
     type: 'varchar',
-    length: 100
+    length: 100,
+    charset: 'utf8mb4'
+
   })
   public readonly promotionImageUrl: string
 
@@ -88,7 +103,9 @@ export class Service {
     name: 'service_url',
     nullable: true,
     type: 'varchar',
-    length: 100
+    length: 100,
+    charset: 'utf8mb4'
+
   })
   public readonly serviceUrl?: string
 
@@ -96,7 +113,8 @@ export class Service {
     name: 'service_source_url',
     nullable: true,
     type: 'varchar',
-    length: 100
+    length: 100,
+    charset: 'utf8mb4'
   })
   public readonly sourceUrl?: string
 
@@ -129,4 +147,12 @@ export class Service {
     nullable: false
   })
   public readonly type: ServiceTypes
+
+  @Column({
+    name: 'services_created_at',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP'
+  })
+  public readonly createdAt: Date
 }
