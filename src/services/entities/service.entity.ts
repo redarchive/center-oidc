@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Client } from '../../clients/entities/client.entity'
 import { User } from '../../users/entities/user.entity'
 import { Screenshot } from './screenshots.entity'
@@ -68,7 +68,7 @@ export class Service {
   })
   public readonly user?: User
 
-  @ManyToOne(() => Client, (client) => client.id, {
+  @OneToMany(() => Client, (client) => client.service, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
@@ -118,23 +118,23 @@ export class Service {
   })
   public readonly sourceUrl?: string
 
-  @ManyToOne(() => Screenshot, (screenshot) => screenshot.id, {
+  @OneToMany(() => Screenshot, (screenshot) => screenshot.service, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
   @JoinColumn({
-    name: 'screenshots_id',
+    name: 'services_id',
     referencedColumnName: 'id',
     foreignKeyConstraintName: 'FK_services_screenshots'
   })
   public readonly screenshots: Screenshot[]
 
-  @ManyToOne(() => Tag, (tag) => tag.id, {
+  @OneToMany(() => Tag, (tag) => tag.service, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
   @JoinColumn({
-    name: 'tags_id',
+    name: 'services_id',
     referencedColumnName: 'id',
     foreignKeyConstraintName: 'FK_services_tags'
   })

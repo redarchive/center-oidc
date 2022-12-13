@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn
 } from 'typeorm'
@@ -55,7 +56,7 @@ export class Client {
   })
   public readonly serviceId: number
 
-  @OneToMany(() => Service, (service) => service.id, {
+  @ManyToOne(() => Service, (service) => service.clients, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })

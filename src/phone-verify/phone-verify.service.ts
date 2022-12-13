@@ -51,7 +51,7 @@ export class PhoneVerifyService {
     // })
     console.log('phone vk: %s=%s', createPhoneVerifyDto.phone, verifyKey)
 
-    return person.user.id
+    return person.user?.id
   }
 
   public async sign (signPhoneVerifyDto: SignPhoneVerifyDto): Promise<string> {

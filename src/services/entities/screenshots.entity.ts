@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Service } from './service.entity'
 
 @Entity({
@@ -29,7 +29,7 @@ export class Screenshot {
   })
   public readonly serviceId: number
 
-  @OneToMany(() => Service, (service) => service.id, {
+  @ManyToOne(() => Service, (service) => service.screenshots, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   })
