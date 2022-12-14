@@ -11,6 +11,7 @@ import { ServicesModule } from '../services/services.module'
 import { SessionsModule } from '../sessions/sessions.module'
 import { TokensModule } from '../tokens/tokens.module'
 import { UsersModule } from '../users/users.module'
+import { ViewsModule } from '../views/views.module'
 import { DBConnService } from './dbconn/dbconn.service'
 
 @Module({
@@ -29,7 +30,8 @@ import { DBConnService } from './dbconn/dbconn.service'
     ClientsModule,
     TokensModule,
     FilesModule,
-    ServicesModule
+    ServicesModule,
+    ViewsModule
   ]
 })
 export class AppModule implements NestModule {
