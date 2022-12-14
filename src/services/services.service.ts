@@ -100,12 +100,18 @@ export class ServicesService {
     }
 
     const updateTempDto = Object.assign({}, updateServiceDto)
+
     delete (updateTempDto as any).clients
+    delete (updateTempDto as any).screenshots
+    delete (updateTempDto as any).tags
+
+    console.log(ServiceTypes[updateTempDto.type ?? ServiceTypes.DESKTOP])
 
     await this.tags.delete({ serviceId: id })
     await this.screenshots.delete({ serviceId: id })
     await this.services.update({ id }, {
-      ...updateTempDto as any
+      ...updateTempDto as any,
+      type: ServiceTypes[updateTempDto.type ?? ServiceTypes.DESKTOP]
     })
 
     if (updateServiceDto.tags !== undefined) {
@@ -128,7 +134,14 @@ export class ServicesService {
   }
 
   public async remove (id: number, userId: number): Promise<void> {
-    const service = await this.services.findOneBy({ id })
+    const service = await this.services.findOne({
+      where: { id },
+      relations: {
+        clients: true,
+        screenshots: true,
+        tags: true
+      }
+    })
 
     if (service === null) {
       throw new NotFoundException('SERVICE_NOT_FOUND')
@@ -136,6 +149,13 @@ export class ServicesService {
 
     if (service.userId !== userId) {
       throw new ForbiddenException('NOT_YOUR_SERVICE')
+    }
+
+    await this.tags.delete({ serviceId: id })
+    await this.screenshots.delete({ serviceId: id })
+
+    for (const client of service.clients) {
+      await this.clientService.remove(client.id, userId)
     }
 
     await this.services.delete({ id })

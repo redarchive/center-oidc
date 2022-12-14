@@ -139,7 +139,13 @@ export class ClientsService {
   }
 
   public async remove (id: string, userId: number): Promise<void> {
-    const client = await this.clients.findOneBy({ id })
+    const client = await this.clients.findOne({
+      where: { id },
+      relations: {
+        redirectUris: true,
+        scopes: true
+      }
+    })
 
     if (client === null) {
       throw new NotFoundException('CLIENT_NOT_FOUND')
@@ -149,6 +155,8 @@ export class ClientsService {
       throw new ForbiddenException('USER_NOT_AUTHORIZED_TO_DELETE')
     }
 
+    await this.scopes.delete({ clientId: id })
+    await this.redirectURIs.delete({ clientId: id })
     await this.clients.delete({ id })
   }
 }

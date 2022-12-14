@@ -22,4 +22,38 @@ export class ViewsService {
       .take(5)
       .getMany()
   }
+
+  public async getCapstone (): Promise<Service[]> {
+    return await this.services.find({
+      relations: {
+        tags: true,
+        screenshots: true,
+        user: true
+      },
+      where: {
+        tags: [{
+          label: '캡스톤프로젝트'
+        }]
+      },
+      take: 12,
+      order: {
+        createdAt: 'DESC'
+      }
+    })
+  }
+
+  public async getRecents (page: number): Promise<Service[]> {
+    return await this.services.find({
+      relations: {
+        tags: true,
+        screenshots: true,
+        user: true
+      },
+      take: 10,
+      skip: 10 * page,
+      order: {
+        createdAt: 'DESC'
+      }
+    })
+  }
 }

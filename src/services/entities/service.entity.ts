@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Client } from '../../clients/entities/client.entity'
 import { User } from '../../users/entities/user.entity'
 import { Screenshot } from './screenshots.entity'
@@ -53,11 +53,12 @@ export class Service {
   @Column({
     name: 'users_id',
     type: 'int',
-    unsigned: true
+    unsigned: true,
+    nullable: true
   })
   public readonly userId?: number
 
-  @OneToMany(() => User, (user) => user.id, {
+  @ManyToOne(() => User, (user) => user.services, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE'
   })

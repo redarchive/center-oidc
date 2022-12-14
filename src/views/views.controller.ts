@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { PResBody } from '../common/ResponseBody'
 import { Service } from '../services/entities/service.entity'
 import { ViewsService } from './views.service'
@@ -20,13 +20,17 @@ export class ViewsController {
   }
 
   @Get('@index')
-  public async getIndex (): PResBody<{ banners: Service[] }> {
+  public async getIndex (@Query('page') page = 0): PResBody<{ banners: Service[], capstones: Service[], recents: Service[] }> {
     const banners = await this.viewsService.getBanners()
+    const capstones = await this.viewsService.getCapstone()
+    const recents = await this.viewsService.getRecents(page)
 
     return {
       success: true,
       data: {
-        banners
+        banners,
+        capstones,
+        recents
       }
     }
   }

@@ -8,6 +8,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
+import { Service } from '../../services/entities/service.entity'
 
 @Entity({
   name: 'users'
@@ -98,7 +99,8 @@ export class User {
   @OneToOne(() => Person, {
     nullable: false,
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
+    onUpdate: 'CASCADE',
+    eager: true
   })
   @JoinColumn({
     name: 'persons_id',
@@ -106,6 +108,9 @@ export class User {
     foreignKeyConstraintName: 'FK_users_persons'
   })
   public readonly person?: Person
+
+  @OneToMany(() => Service, (service) => service.user)
+  public readonly services: Service[]
 
   @OneToMany(() => Client, (client) => client.user)
   public readonly clients: Client[]
