@@ -7,9 +7,9 @@ import { Tag } from './tag.entity'
 
 export enum ServiceTypes {
   WEBSITE = 0,
-  DESKTOP,
   MOBILE,
   GAME,
+  DESKTOP,
   PHYSICAL
 }
 
