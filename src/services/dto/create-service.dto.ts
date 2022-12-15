@@ -1,4 +1,4 @@
-import { IsArray, IsIn, IsOptional, IsString, MaxLength, MinLength } from 'class-validator'
+import { IsArray, IsIn, IsOptional, IsString, IsUrl, MaxLength, MinLength } from 'class-validator'
 import { CreateClientDto } from '../../clients/dto/create-client.dto'
 import { ServiceTypes } from '../entities/service.entity'
 
@@ -17,16 +17,20 @@ export class CreateServiceDto {
   public readonly clients: CreateClientDto[]
 
   @IsString()
+  @IsUrl()
   public readonly logoUrl: string
 
   @IsString()
+  @IsUrl()
   public readonly promotionImageUrl: string
 
   @IsString()
+  @IsUrl()
   @IsOptional()
   public readonly serviceUrl?: string
 
   @IsString()
+  @IsUrl()
   @IsOptional()
   public readonly sourceUrl?: string
 

@@ -6,7 +6,6 @@ import { PResBody } from '../common/ResponseBody'
 import { AuthGuard } from '../auth/auth.guard'
 import { GuardedRequest } from '../auth/dto/Locals.dto'
 import { Service } from './entities/service.entity'
-import { Tag } from './entities/tag.entity'
 
 @Controller('services')
 export class ServicesController {
@@ -35,7 +34,7 @@ export class ServicesController {
   }
 
   @Get('@tags')
-  public async findAllTag (): PResBody<{ tags: Tag[] }> {
+  public async findAllTag (): PResBody<{ tags: string[] }> {
     const tags = await this.servicesService.getTags()
 
     return {

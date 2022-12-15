@@ -29,10 +29,15 @@ export class ServicesService {
     return services
   }
 
-  public async getTags (): Promise<Tag[]> {
-    const tags = await this.tags.find()
+  public async getTags (): Promise<string[]> {
+    const tags =
+      await this.tags
+        .createQueryBuilder()
+        .select('tags_label')
+        .distinct(true)
+        .getRawMany()
 
-    return tags
+    return tags.map((v) => v.tags_label as string)
   }
 
   public async create (userId: number, createServiceDto: CreateServiceDto): Promise<void> {
