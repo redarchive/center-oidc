@@ -12,7 +12,9 @@ export class FilesService {
   constructor (
     configService: ConfigService
   ) {
-    this.s3 = new S3Client({})
+    this.s3 = new S3Client({
+      region: configService.get<string>('BUCKET_REGION', 'ap-northeast-2')
+    })
     this.BUCKET_NAME = configService.get<string>('BUCKET_NAME', 'center-usercontents')
   }
 
