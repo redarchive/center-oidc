@@ -76,7 +76,7 @@ export class User {
   @Column({
     name: 'users_profile_image',
     type: 'varchar',
-    length: 100,
+    length: 500,
     nullable: true
   })
   public readonly profileImage?: string

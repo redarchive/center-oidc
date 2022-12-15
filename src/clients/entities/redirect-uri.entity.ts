@@ -22,7 +22,7 @@ export class RedirectURI {
   @Column({
     name: 'redirect_uris_url',
     type: 'varchar',
-    length: 100,
+    length: 500,
     charset: 'utf8mb4'
 
   })

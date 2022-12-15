@@ -17,7 +17,7 @@ export class Screenshot {
     name: 'screenshots_url',
     nullable: false,
     type: 'varchar',
-    length: 100,
+    length: 500,
     charset: 'utf8mb4'
   })
   public readonly url: string

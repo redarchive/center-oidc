@@ -84,7 +84,7 @@ export class Service {
     name: 'service_logo_url',
     nullable: false,
     type: 'varchar',
-    length: 100,
+    length: 500,
     charset: 'utf8mb4'
 
   })
@@ -94,7 +94,7 @@ export class Service {
     name: 'service_promotion_img_url',
     nullable: false,
     type: 'varchar',
-    length: 100,
+    length: 500,
     charset: 'utf8mb4'
 
   })
@@ -104,7 +104,7 @@ export class Service {
     name: 'service_url',
     nullable: true,
     type: 'varchar',
-    length: 100,
+    length: 500,
     charset: 'utf8mb4'
 
   })
@@ -114,7 +114,7 @@ export class Service {
     name: 'service_source_url',
     nullable: true,
     type: 'varchar',
-    length: 100,
+    length: 500,
     charset: 'utf8mb4'
   })
   public readonly sourceUrl?: string
