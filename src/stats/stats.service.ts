@@ -4,12 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { LessThan, Repository } from 'typeorm'
 import { Stat, StatTypes } from './entities/stat.entity'
 import * as moment from 'moment'
+import { Service } from '../services/entities/service.entity'
 
 @Injectable()
 export class StatsService {
   constructor (
     @InjectRepository(Stat)
-    private readonly stats: Repository<Stat>
+    private readonly stats: Repository<Stat>,
+    @InjectRepository(Service)
+    private readonly services: Repository<Service>
   ) {}
 
   public async increse (serviceId: number, type: StatTypes): Promise<void> {
@@ -29,7 +32,11 @@ export class StatsService {
       id = generatedMaps[0].id as number
     }
 
-    await this.stats.increment({ id }, 'counter', 1)
+    if (type === StatTypes.LOGIN) {
+      void this.services.increment({ id: serviceId }, 'logins', 1)
+    }
+
+    void this.stats.increment({ id }, 'counter', 1)
   }
 
   @Cron('0 0 * * *')
