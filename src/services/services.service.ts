@@ -2,6 +2,8 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { ClientsService } from '../clients/clients.service'
+import { StatTypes } from '../stats/entities/stat.entity'
+import { StatsService } from '../stats/stats.service'
 import { CreateServiceDto } from './dto/create-service.dto'
 import { UpdateServiceDto } from './dto/update-service.dto'
 import { Screenshot } from './entities/screenshots.entity'
@@ -17,7 +19,8 @@ export class ServicesService {
     private readonly screenshots: Repository<Screenshot>,
     @InjectRepository(Tag)
     private readonly tags: Repository<Tag>,
-    private readonly clientService: ClientsService
+    private readonly clientService: ClientsService,
+    private readonly statsService: StatsService
   ) {}
 
   public async getByUserId (userId: number): Promise<Service[]> {
@@ -76,12 +79,15 @@ export class ServicesService {
   }
 
   public async findOne (id: number): Promise<Service | null> {
+    void this.statsService.increse(id, StatTypes.VIEW)
+
     const service = await this.services.findOne({
       where: { id },
       relations: {
         clients: true,
         screenshots: true,
-        tags: true
+        tags: true,
+        stats: true
       }
     })
 

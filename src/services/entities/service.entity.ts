@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Client } from '../../clients/entities/client.entity'
+import { Stat } from '../../stats/entities/stat.entity'
 import { User } from '../../users/entities/user.entity'
 import { Screenshot } from './screenshots.entity'
 import { Tag } from './tag.entity'
@@ -25,13 +26,13 @@ export class Service {
   public readonly id: number
 
   @Column({
-    name: 'services_views',
+    name: 'services_logins',
     type: 'int',
     unsigned: true,
     default: 0,
     nullable: false
   })
-  public readonly views: number
+  public readonly logins: number
 
   @Column({
     name: 'services_name',
@@ -140,6 +141,17 @@ export class Service {
     foreignKeyConstraintName: 'FK_services_tags'
   })
   public readonly tags: Tag[]
+
+  @OneToMany(() => Stat, (stat) => stat.service, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  @JoinColumn({
+    name: 'services_id',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: 'FK_services_stats'
+  })
+  public readonly stats: Stat[]
 
   @Column({
     name: 'services_type',

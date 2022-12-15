@@ -72,7 +72,8 @@ export class ClientsService {
       },
       relations: {
         redirectUris: true,
-        scopes: true
+        scopes: true,
+        service: true
       }
     })
 

@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ScheduleModule } from '@nestjs/schedule'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthMiddleware } from '../auth/auth.middleware'
 import { AuthModule } from '../auth/auth.module'
@@ -22,6 +23,7 @@ import { DBConnService } from './dbconn/dbconn.service'
       inject: [ConfigService],
       useClass: DBConnService
     }),
+    ScheduleModule.forRoot(),
     PersonsModule,
     UsersModule,
     PhoneVerifyModule,

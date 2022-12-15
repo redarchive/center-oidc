@@ -5,11 +5,13 @@ import { JwtModule } from '@nestjs/jwt'
 import { readFileSync } from 'fs'
 import { UsersModule } from '../users/users.module'
 import { ClientsModule } from '../clients/clients.module'
+import { StatsModule } from '../stats/stats.module'
 
 @Module({
   imports: [
     ClientsModule,
     UsersModule,
+    StatsModule,
     JwtModule.register({
       privateKey: readFileSync('./keys/private.pem'),
       publicKey: readFileSync('./keys/public.pem'),

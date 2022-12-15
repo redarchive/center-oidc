@@ -4,13 +4,16 @@ import { ClientsService } from '../clients/clients.service'
 import { UsersService } from '../users/users.service'
 import { CreateTokenDto } from './dto/create-token.dto'
 import { v4 as uuid } from 'uuid'
+import { StatsService } from '../stats/stats.service'
+import { StatTypes } from '../stats/entities/stat.entity'
 
 @Injectable()
 export class TokensService {
   constructor (
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
-    private readonly clientsService: ClientsService
+    private readonly clientsService: ClientsService,
+    private readonly statsService: StatsService
   ) {}
 
   public async create (userId: number, createTokenDto: CreateTokenDto, iss: string): Promise<string> {
@@ -24,6 +27,8 @@ export class TokensService {
     if (client === null) {
       throw new NotFoundException('CLIENT_NOT_FOUND')
     }
+
+    void this.statsService.increse(client.serviceId, StatTypes.LOGIN)
 
     const data: any = {
       id: user.id,
