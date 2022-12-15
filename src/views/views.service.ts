@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { Service } from '../services/entities/service.entity'
+import { Service, ServiceTypes } from '../services/entities/service.entity'
 
 @Injectable()
 export class ViewsService {
@@ -14,6 +14,25 @@ export class ViewsService {
     return await this.services.count()
   }
 
+  public async getTop10 (category?: string): Promise<Service[]> {
+    return await this.services.find({
+      order: {
+        logins: 'DESC'
+      },
+      take: 10,
+      relations: {
+        user: true
+      },
+      ...(category !== undefined
+        ? {
+            where: {
+              type: ServiceTypes[category]
+            }
+          }
+        : {})
+    })
+  }
+
   public async getBanners (): Promise<Service[]> {
     return await this.services
       .createQueryBuilder('services')
@@ -23,17 +42,21 @@ export class ViewsService {
       .getMany()
   }
 
-  public async getCapstone (): Promise<Service[]> {
+  public async getCapstone (category?: string): Promise<Service[]> {
     return await this.services.find({
       relations: {
         tags: true,
-        screenshots: true,
         user: true
       },
       where: {
         tags: [{
           label: '캡스톤프로젝트'
-        }]
+        }],
+        ...(category !== undefined
+          ? {
+              type: ServiceTypes[category]
+            }
+          : {})
       },
       take: 12,
       order: {
@@ -42,18 +65,23 @@ export class ViewsService {
     })
   }
 
-  public async getRecents (page: number): Promise<Service[]> {
+  public async getRecents (page: number, category?: string): Promise<Service[]> {
     return await this.services.find({
       relations: {
-        tags: true,
-        screenshots: true,
         user: true
       },
       take: 10,
       skip: 10 * page,
       order: {
         createdAt: 'DESC'
-      }
+      },
+      ...(category !== undefined
+        ? {
+            where: {
+              type: ServiceTypes[category]
+            }
+          }
+        : {})
     })
   }
 }

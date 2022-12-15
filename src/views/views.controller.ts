@@ -20,7 +20,8 @@ export class ViewsController {
   }
 
   @Get('@index')
-  public async getIndex (@Query('page') page = 0): PResBody<{ banners: Service[], capstones: Service[], recents: Service[] }> {
+  public async getIndex (@Query('page') page = 0): PResBody<{ top10: Service[], banners: Service[], capstones: Service[], recents: Service[] }> {
+    const top10 = await this.viewsService.getTop10()
     const banners = await this.viewsService.getBanners()
     const capstones = await this.viewsService.getCapstone()
     const recents = await this.viewsService.getRecents(page)
@@ -28,7 +29,24 @@ export class ViewsController {
     return {
       success: true,
       data: {
+        top10,
         banners,
+        capstones,
+        recents
+      }
+    }
+  }
+
+  @Get('@category')
+  public async getCategory (@Query('page') page = 0, @Query('type') category: string): PResBody<{ top10: Service[], capstones: Service[], recents: Service[] }> {
+    const top10 = await this.viewsService.getTop10(category)
+    const capstones = await this.viewsService.getCapstone(category)
+    const recents = await this.viewsService.getRecents(page, category)
+
+    return {
+      success: true,
+      data: {
+        top10,
         capstones,
         recents
       }
