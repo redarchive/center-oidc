@@ -100,7 +100,12 @@ export class ServicesService {
   }
 
   public async update (id: number, userId: number, updateServiceDto: UpdateServiceDto): Promise<void> {
-    const service = await this.services.findOneBy({ id })
+    const service = await this.services.findOne({
+      where: { id },
+      relations: {
+        clients: true
+      }
+    })
 
     if (service === null) {
       throw new NotFoundException('SERVICE_NOT_FOUND')
@@ -115,8 +120,6 @@ export class ServicesService {
     delete (updateTempDto as any).clients
     delete (updateTempDto as any).screenshots
     delete (updateTempDto as any).tags
-
-    console.log(ServiceTypes[updateTempDto.type ?? ServiceTypes.DESKTOP])
 
     await this.tags.delete({ serviceId: id })
     await this.screenshots.delete({ serviceId: id })
@@ -140,6 +143,16 @@ export class ServicesService {
           serviceId: id,
           url: screenshot
         })
+      }
+    }
+
+    for (const client of service.clients) {
+      await this.clientService.remove(client.id, userId)
+    }
+
+    if (updateServiceDto.clients !== undefined) {
+      for (const client of updateServiceDto.clients) {
+        await this.clientService.create(userId, client, id)
       }
     }
   }
