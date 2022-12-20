@@ -92,6 +92,60 @@ export class UsersService {
     })
   }
 
+  public async update (userId: number, updateUserDto: UpdateUserDto): Promise<void> {
+    if (userId !== updateUserDto.id) {
+      throw new BadRequestException('USER_SESSION_AND_INPUT_BODY_NOT_MATCH')
+    }
+
+    const user = await this.users.findOne({
+      where: {
+        id: updateUserDto.id
+      },
+      relations: {
+        person: true
+      }
+    })
+
+    if (user === null) {
+      throw new BadRequestException('USER_NOT_FOUND')
+    }
+
+    if (updateUserDto.oldPassword !== undefined && updateUserDto.newPassword !== undefined) {
+      const oldPasswd = new SHA3(512)
+        .update(updateUserDto.oldPassword)
+        .update(user.salt)
+        .digest('hex')
+
+      if (oldPasswd !== user.password) {
+        throw new BadRequestException('PASSWORD_INVALID')
+      }
+
+      const salt = randomBytes(3).toString()
+      const password = new SHA3(512)
+        .update(updateUserDto.newPassword)
+        .update(salt)
+        .digest('hex')
+
+      await this.users.update(
+        {
+          id: updateUserDto.id
+        },
+        {
+          password,
+          salt
+        }
+      )
+    }
+
+    await this.users.update({
+      id: updateUserDto.id
+    }, {
+      email: updateUserDto.email,
+      nickname: updateUserDto.nickname,
+      profileImage: updateUserDto.profileImage
+    })
+  }
+
   public async updateUnknown (updateUserDto: UpdateUserDto): Promise<void> {
     const user = await this.users.findOne({
       where: {

@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  IsUrl,
   Length,
   MaxLength
 } from 'class-validator'
@@ -29,6 +30,12 @@ export class UpdateUserDto {
   @IsEmail()
   @IsOptional()
   public readonly email?: string
+
+  @IsString()
+  @MaxLength(500)
+  @IsUrl()
+  @IsOptional()
+  public readonly profileImage?: string
 
   @IsString()
   @Length(10, 30)

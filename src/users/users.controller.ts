@@ -60,6 +60,16 @@ export class UsersController {
     }
   }
 
+  @Patch('@me')
+  @UseGuards(AuthGuard)
+  public async updateMe (@Req() req: GuardedRequest, @Body() updateUserDto: UpdateUserDto): PResBody {
+    await this.usersService.update(req.userId, updateUserDto)
+
+    return {
+      success: true
+    }
+  }
+
   @Patch('@unknown')
   public async updateUnknown (@Body() updateUserDto: UpdateUserDto): PResBody {
     await this.usersService.updateUnknown(updateUserDto)
