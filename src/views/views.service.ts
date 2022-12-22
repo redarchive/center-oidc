@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Like, Repository } from 'typeorm'
 import { Service, ServiceTypes } from '../services/entities/service.entity'
 
 @Injectable()
@@ -82,6 +82,24 @@ export class ViewsService {
             }
           }
         : {})
+    })
+  }
+
+  public async getSearchResult (page: number, query: string): Promise<Service[]> {
+    return await this.services.find({
+      relations: {
+        user: true
+      },
+      take: 10,
+      skip: 10 * page,
+      order: {
+        createdAt: 'DESC'
+      },
+      where: [
+        { name: Like(`%${query}%`) },
+        { description: Like(`%${query}%`) },
+        { tags: [{ label: Like(`%${query}%`) }] }
+      ]
     })
   }
 }

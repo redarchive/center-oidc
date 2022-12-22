@@ -52,4 +52,16 @@ export class ViewsController {
       }
     }
   }
+
+  @Get('@search')
+  public async getSearchResult (@Query('query') query = '', @Query('page') page = 0): PResBody<{ result: Service[] }> {
+    const result = await this.viewsService.getSearchResult(page, query)
+
+    return {
+      success: true,
+      data: {
+        result
+      }
+    }
+  }
 }
