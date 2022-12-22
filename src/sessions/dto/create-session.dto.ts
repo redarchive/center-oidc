@@ -8,7 +8,7 @@ export class CreateSessionDto {
   public readonly login: string
 
   @IsString()
-  @Length(10, 30)
+  @Length(8, 30)
   @IsAscii()
   public readonly password: string
 
