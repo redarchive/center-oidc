@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common'
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
 import { PResBody } from '../common/ResponseBody'
 import { Service } from '../services/entities/service.entity'
 import { ViewsService } from './views.service'
@@ -56,6 +56,10 @@ export class ViewsController {
   @Get('@search')
   public async getSearchResult (@Query('query') query = '', @Query('page') page = 0): PResBody<{ result: Service[] }> {
     const result = await this.viewsService.getSearchResult(page, query)
+
+    if (query.length < 2) {
+      throw new BadRequestException('QUERY_TOO_SHORT')
+    }
 
     return {
       success: true,
