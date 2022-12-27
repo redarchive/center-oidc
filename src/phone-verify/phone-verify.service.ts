@@ -32,7 +32,7 @@ export class PhoneVerifyService {
     })
   }
 
-  public async create (createPhoneVerifyDto: CreatePhoneVerifyDto): Promise<number> {
+  public async create (createPhoneVerifyDto: CreatePhoneVerifyDto): Promise<{ id: number, login: string }> {
     const person = await this.personsService.findOneByPhone(
       PersonType[createPhoneVerifyDto.type],
       createPhoneVerifyDto.phone
@@ -51,7 +51,10 @@ export class PhoneVerifyService {
     // })
     console.log('phone vk: %s=%s', createPhoneVerifyDto.phone, verifyKey)
 
-    return person.user?.id
+    return {
+      id: person.user?.id,
+      login: person.user.login
+    }
   }
 
   public async sign (signPhoneVerifyDto: SignPhoneVerifyDto): Promise<string> {
