@@ -68,7 +68,7 @@ export class User {
     length: 30,
     charset: 'utf8mb4',
     nullable: true,
-    select: false,
+    select: true,
     unique: false
   })
   public readonly email?: string

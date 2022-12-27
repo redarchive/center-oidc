@@ -38,13 +38,13 @@ export class UpdateUserDto {
   public readonly profileImage?: string
 
   @IsString()
-  @Length(10, 30)
+  @Length(8, 30)
   @IsAscii()
   @IsOptional()
   public readonly oldPassword?: string
 
   @IsString()
-  @Length(10, 30)
+  @Length(8, 30)
   @IsAscii()
   @IsOptional()
   public readonly newPassword?: string

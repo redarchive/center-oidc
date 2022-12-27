@@ -101,6 +101,11 @@ export class UsersService {
       where: {
         id: updateUserDto.id
       },
+      select: {
+        salt: true,
+        id: true,
+        password: true
+      },
       relations: {
         person: true
       }
