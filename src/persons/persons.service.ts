@@ -40,7 +40,7 @@ export class PersonsService {
     const stuKey = '#,이름,학년,반,번호,기숙사명-번호,전화번호,성별'
     const etcKey = '#,이름,전화번호'
 
-    const headers = '회원관리\n\n재학생,,,,,,,,,졸업생,,,,교사'
+    const headers = '회원관리\n\n재학생,,,,,,,,,졸업생,,,,교사,,,,,,,,,,,,,,,,,,, * 주의! 유저를 옮길경우 무조건 #을 같이 이동시켜야 합니다! (#이 변경되면 계정이 지워지고 새로 만들어집니다.)'
     const keys = `${stuKey},,${etcKey},,${etcKey}`
 
     const students = persons.filter((v) => v.type === PersonType.CURRENT_STUDENT)
@@ -284,7 +284,7 @@ export class PersonsService {
 
     const duplicatedIds =
       allIds.filter((v) =>
-        allIds.filter((v2) => v === v2).length > 1)
+        v.length > 0 && allIds.filter((v2) => v === v2).length > 1)
 
     if (duplicatedIds.length > 0) {
       throw new BadRequestException('DUPLICATED_IDS_ON_#' + duplicatedIds.join('_'))
@@ -295,6 +295,8 @@ export class PersonsService {
 
   public async applyDiffData (data: ApplyDiffDto): Promise<void> {
     const parsePhone = (v: string): string => v.replace(/-/g, '')
+    const parseNumber = (v: string): number | undefined =>
+      !Number.isNaN(parseInt(v)) ? parseInt(v) : undefined
 
     for (const student of data.newStudent) {
       let studentGender: PersonGender | undefined
@@ -309,9 +311,9 @@ export class PersonsService {
 
       await this.persons.insert({
         name: student[1],
-        grade: parseInt(student[2]),
-        classroom: parseInt(student[3]),
-        classNumber: parseInt(student[4]),
+        grade: parseNumber(student[2]),
+        classroom: parseNumber(student[3]),
+        classNumber: parseNumber(student[4]),
         dormitoryRoomNumber: student[5],
         phone: parsePhone(student[6]),
         gender: studentGender,
@@ -352,9 +354,9 @@ export class PersonsService {
         id: parseInt(student[0])
       }, {
         name: student[1],
-        grade: parseInt(student[2]),
-        classroom: parseInt(student[3]),
-        classNumber: parseInt(student[4]),
+        grade: parseNumber(student[2]),
+        classroom: parseNumber(student[3]),
+        classNumber: parseNumber(student[4]),
         dormitoryRoomNumber: student[5],
         phone: parsePhone(student[6]),
         gender: studentGender,
@@ -410,9 +412,9 @@ export class PersonsService {
         id: parseInt(student[0])
       }, {
         name: student[1],
-        grade: parseInt(student[2]),
-        classroom: parseInt(student[3]),
-        classNumber: parseInt(student[4]),
+        grade: parseNumber(student[2]),
+        classroom: parseNumber(student[3]),
+        classNumber: parseNumber(student[4]),
         dormitoryRoomNumber: student[5],
         phone: parsePhone(student[6]),
         gender: studentGender,
