@@ -102,7 +102,7 @@ export class PersonsService {
       values += '\n'
     }
 
-    return `${headers}\n${keys}\n${values}`
+    return `\ufeff${headers}\n${keys}\n${values}`
   }
 
   public async calcImportData (data: string): Promise<{ [key: string]: string[][] }> {
