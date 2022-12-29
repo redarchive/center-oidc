@@ -44,7 +44,7 @@ export class PhoneVerifyService {
 
     const verifyKey = randomBytes(3).toString('hex').toUpperCase()
 
-    await this.cacheService.set(`sign/${verifyKey}`, createPhoneVerifyDto.phone, { ttl: 10 } as any)
+    await this.cacheService.set(`sign/${verifyKey}`, createPhoneVerifyDto.phone, { ttl: 10 * 60 } as any)
     await this.aligoService.sendMessages({
       msg: `[통합로그인 인증번호]\n\n"${verifyKey}" (5분 안에 입력)`,
       receiver: createPhoneVerifyDto.phone
