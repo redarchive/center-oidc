@@ -34,20 +34,21 @@ export class TokensService {
       id: user.id,
       login: user.login,
       nickname: user.nickname,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      type: user.person?.type
     }
 
     if (createTokenDto.scopes.includes('CLASS_INFO')) {
       data.classInfo = {
-        grade: user.person.grade,
-        class: user.person.classroom,
-        number: user.person.classNumber
+        grade: user.person?.grade,
+        class: user.person?.classroom,
+        number: user.person?.classNumber
       }
     }
 
     if (createTokenDto.scopes.includes('DORMITORY')) {
       data.dormitory = {
-        room: user.person.dormitoryRoomNumber
+        room: user.person?.dormitoryRoomNumber
       }
     }
 
@@ -56,15 +57,15 @@ export class TokensService {
     }
 
     if (createTokenDto.scopes.includes('GENDER')) {
-      data.gender = user.person.gender
+      data.gender = user.person?.gender
     }
 
     if (createTokenDto.scopes.includes('PHONE_NUMBER')) {
-      data.phone = user.person.phone
+      data.phone = user.person?.phone
     }
 
     if (createTokenDto.scopes.includes('REAL_NAME')) {
-      data.fullname = user.person.name
+      data.fullname = user.person?.name
     }
 
     return this.jwtService.sign({
