@@ -53,7 +53,7 @@ export class PhoneVerifyService {
 
     return {
       id: person.user?.id,
-      login: person.user.login
+      login: person.user?.login
     }
   }
 
